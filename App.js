@@ -9,6 +9,7 @@ import AddPlant from './components/AddPlant.js'
 import Badges from './components/Badges.js'
 import PlantInfo from './components/PlantInfo.js'
 
+// Home page
 function Home() {
   const navigation = useNavigation();
   return (
