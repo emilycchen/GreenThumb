@@ -1,4 +1,4 @@
-import {Button} from 'react-native';
+import {Button, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 export default function ThirdPage(){
@@ -8,3 +8,7 @@ export default function ThirdPage(){
   
     )
 }
+
+const styles = StyleSheet.create({
+  
+})

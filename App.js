@@ -1,6 +1,5 @@
 
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, TouchableHighlight, Text, View, SafeAreaView, Alert,Image, Button} from 'react-native';
+import { StyleSheet, SafeAreaView, View, Button} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -14,10 +13,11 @@ function Home() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
-      <Button color = "blue" title="Go to AddPlant" onPress = {() => navigation.navigate('AddPlant')}/>
+      <View style={{backgroundColor:'red', width:100,height:100}}/>
+      <Button color = "blue" title="Go to Add Plant" onPress = {() => navigation.navigate('Add Plant')}/>
       <Button color = "red" title="Go to Articles" onPress = {() => navigation.navigate('Articles')}/>
       <Button color = "green" title="Go to Badges" onPress = {() => navigation.navigate('Badges')}/>
-      <Button color = "orange" title="Go to PlantInfo" onPress = {() => navigation.navigate('PlantInfo')}/>
+      <Button color = "orange" title="Go to Plant Info" onPress = {() => navigation.navigate('Plant Info')}/>
     </SafeAreaView>
   );
 }
@@ -26,12 +26,12 @@ const Stack = createNativeStackNavigator();
 
 function RootStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator >
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="AddPlant" component={AddPlant}/>
+      <Stack.Screen name="Add Plant" component={AddPlant}/>
       <Stack.Screen name="Articles" component={Articles}/>
       <Stack.Screen name="Badges" component={Badges}/>
-      <Stack.Screen name="PlantInfo" component={PlantInfo}/>
+      <Stack.Screen name="Plant Info" component={PlantInfo}/>
     </Stack.Navigator>
   );
 }
