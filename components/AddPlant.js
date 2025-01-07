@@ -1,22 +1,26 @@
 import {Button, StyleSheet,View,Text,TextInput} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
+import {useState} from 'react';
 
 export default function AddPlant(){
     const navigation = useNavigation();
+    const [name, setName] = useState("");
+    const [species, setSpecies] = useState("");
+    const [indoors, setIndoors] = useState(false);
+
     return (
       <View style={styles.container}>
         <View style={styles.question}>
           <Text>Name</Text>
           <View style={styles.input}>
-            <TextInput />
+            <TextInput onChangeText={(text) => {setName(text)}}/>
           </View>
         </View>
 
         <View style={styles.question}>
           <Text>Species</Text>
           <View style={styles.input}>
-            <TextInput />
+            <TextInput onChangeText={(text) => {setSpecies(text)}}/>
           </View>
         </View>
 
@@ -24,16 +28,16 @@ export default function AddPlant(){
           <Text>Indoors or outdoors?</Text>
           <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
             <View style={styles.multipleSelect}>
-              <Button color='white' title="indoors"/>
+              <Button color='white' title="indoors" onPress={()=>{setIndoors(true)}}/>
             </View>
             <View style={styles.multipleSelect}>
-              <Button color='white' title="outdoors"/>
+              <Button color='white' title="outdoors" onPress={()=>{setIndoors(false)}}/>
             </View>
           </View>
         </View>
 
         <View style={styles.submitBtn}>
-            <Button color='white' title="Add me!"/>
+            <Button color='white' title="Add me!" onPress={()=>console.log(name+species+indoors)}/>
         </View>
 
         

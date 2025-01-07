@@ -13,11 +13,16 @@ function Home() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{backgroundColor:'red', width:100,height:100}}/>
       <Button color = "blue" title="Go to Add Plant" onPress = {() => navigation.navigate('Add Plant')}/>
       <Button color = "red" title="Go to Articles" onPress = {() => navigation.navigate('Articles')}/>
       <Button color = "green" title="Go to Badges" onPress = {() => navigation.navigate('Badges')}/>
       <Button color = "orange" title="Go to Plant Info" onPress = {() => navigation.navigate('Plant Info')}/>
+      <View style={styles.bannerBottom}>
+        <View style={styles.bottomBtn}/>
+        <View style={styles.bottomBtn}/>
+        <View style={styles.bottomBtn}/>
+        <View style={styles.bottomBtn}/>
+      </View>
     </SafeAreaView>
   );
 }
@@ -47,8 +52,23 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#e6e8e6',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end'
+  },
+  bannerBottom:{
+    width:'100%',
+    height: 100,
+    bottom:-30,
+    backgroundColor:'white',
+    flexDirection:'row',
+    justifyContent:'space-evenly'
+  },
+  bottomBtn:{
+    width:50,
+    height:50,
+    backgroundColor:'#97f043',
+    borderRadius:25,
+    margin:10
   }
 });
