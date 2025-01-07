@@ -1,5 +1,6 @@
 
-import { StyleSheet, SafeAreaView, View, Button} from 'react-native';
+import { StyleSheet, SafeAreaView, View} from 'react-native';
+import { PaperProvider,Chip,Button } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,16 +8,18 @@ import Articles from './components/Articles.js'
 import AddPlant from './components/AddPlant.js'
 import Badges from './components/Badges.js'
 import PlantInfo from './components/PlantInfo.js'
+import Calendar from './components/Calendar.js';
 
 // Home page
 function Home() {
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
-      <Button color = "blue" title="Go to Add Plant" onPress = {() => navigation.navigate('Add Plant')}/>
-      <Button color = "red" title="Go to Articles" onPress = {() => navigation.navigate('Articles')}/>
-      <Button color = "green" title="Go to Badges" onPress = {() => navigation.navigate('Badges')}/>
-      <Button color = "orange" title="Go to Plant Info" onPress = {() => navigation.navigate('Plant Info')}/>
+      <Button mode="outlined" textColor="white" buttonColor="green" onPress = {() => navigation.navigate('Add Plant')}>Add Plant</Button>
+      <Button mode="outlined" onPress = {() => navigation.navigate('Articles')}>Articles</Button>
+      <Button mode="outlined" onPress = {() => navigation.navigate('Badges')}>Badges</Button>
+      <Button mode="outlined" onPress = {() => navigation.navigate('Plant Info')}>Plant Info</Button>
+      <Button mode="outlined" onPress = {() => navigation.navigate('Calendar')}>Calendar</Button>
       <View style={styles.bannerBottom}>
         <View style={styles.bottomBtn}/>
         <View style={styles.bottomBtn}/>
@@ -37,6 +40,7 @@ function RootStack() {
       <Stack.Screen name="Articles" component={Articles}/>
       <Stack.Screen name="Badges" component={Badges}/>
       <Stack.Screen name="Plant Info" component={PlantInfo}/>
+      <Stack.Screen name="Calendar" component={Calendar}/>
     </Stack.Navigator>
   );
 }
@@ -60,6 +64,7 @@ const styles = StyleSheet.create({
     width:'100%',
     height: 100,
     bottom:-30,
+    //move down a bit
     backgroundColor:'white',
     flexDirection:'row',
     justifyContent:'space-evenly'
