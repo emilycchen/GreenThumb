@@ -5,7 +5,7 @@ export default function Articles(){
     const navigation = useNavigation();
     return (
       <Button title="Back To Home" onPress = {() => navigation.navigate('Home')}/>
-  
+      
     )
 }
 
