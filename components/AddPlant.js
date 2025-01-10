@@ -11,9 +11,29 @@ export default function AddPlant(){
     const [iconFile, setIconFile] = useState('');
     const [native, setNative] = useState(false);
     const [waterWeek, setWaterWeek] = useState(0);
+
+    // stores strings
     const [waterDay, setWaterDay] = useState([]);
 
-    
+    const onClickWaterChip = (day) => {
+
+      if (!waterDay.includes(day)){
+        
+        setWaterDay([...waterDay, day]);
+      } else {
+        let temp = [];
+        for (let str of waterDay){
+          if (str !== day){
+            temp.push(str);
+          }
+        }
+        setWaterDay(temp);
+      }
+      console.log(waterDay);
+      
+    }
+
+
 
     return (
       <View >
@@ -68,15 +88,15 @@ export default function AddPlant(){
         <View style={styles.waterDayQue}>
           <Text>Select watering days</Text>
           <View style={styles.dayChipRow}>
-            <Chip style={styles.dayChip} onPress={()=>{setWaterDay((waterDay)=>[...waterDay, 'mon']);}} selected={waterDay.includes('mon')}> Mon</Chip>
-            <Chip style={styles.dayChip} onPress={()=>{setWaterDay((waterDay)=>[...waterDay, 'tues']);}} selected={waterDay.includes('tues')}> Tues</Chip>
-            <Chip style={styles.dayChip}> Wed</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("mon");}} selected={waterDay.includes("mon")}> Mon</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("tues");}} selected={waterDay.includes("tues")}> Tues</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("wed");}} selected={waterDay.includes("wed")}> Wed</Chip>
           </View>
           <View style={styles.dayChipRow}>
-            <Chip style={styles.dayChip}> Thurs</Chip>
-            <Chip style={styles.dayChip}> Fri</Chip>
-            <Chip style={styles.dayChip}> Sat</Chip>
-            <Chip style={styles.dayChip}> Sun</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("thurs");}} selected={waterDay.includes("thurs")}> Thurs</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("fri");}} selected={waterDay.includes("fri")}> Fri</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("sat");}} selected={waterDay.includes("sat")}> Sat</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("sun");}} selected={waterDay.includes("sun")}> Sun</Chip>
           </View>
         </View>
 

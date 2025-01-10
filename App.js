@@ -18,7 +18,7 @@ function Home() {
     <SafeAreaView style={styles.container}>
 
       <View style={styles.gridRow}>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
+        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info",{str:'hello'})}>
           <Surface style={styles.surface}>
             <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
           </Surface>
@@ -127,7 +127,9 @@ const styles = StyleSheet.create({
   },
   gridRow:{
     flexDirection:'row',
-    justifyContent:'center'
+    justifyContent:'center',
+    alignItems:'center',
+    left:-10
   },
   bannerBottom:{
     width:'100%',

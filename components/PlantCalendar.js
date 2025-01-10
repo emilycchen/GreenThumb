@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
   },
   listBox:{
     backgroundColor:'lightgreen',
-    width: '80%',
-    height:350,
+    width: '90%',
+    height:200,
     margin:10,
     borderRadius:50,
     padding: 20
