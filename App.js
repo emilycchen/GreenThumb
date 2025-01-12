@@ -8,7 +8,7 @@ import Articles from './components/Articles.js'
 import AddPlant from './components/AddPlant.js'
 import Badges from './components/Badges.js'
 import PlantInfo from './components/PlantInfo.js'
-import Calendar from './components/Calendar.js';
+import PlantCalendar from './components/PlantCalendar.js';
 import PlantList from './components/PlantList.js';
 
 // Home page
@@ -18,7 +18,7 @@ function Home() {
     <SafeAreaView style={styles.container}>
 
       <View style={styles.gridRow}>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
+        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info",{str:'hello'})}>
           <Surface style={styles.surface}>
             <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
           </Surface>
@@ -71,13 +71,9 @@ function Home() {
         </TouchableOpacity>
       </View>
 
-      <Button mode="outlined" onPress = {() => navigation.navigate('Plant Info')}>Plant Info</Button>
+      <Button mode="outlined" onPress = {() => navigation.navigate('Plant List')}>All Plants</Button>
       
       <View style={styles.bannerBottom}>
-        <TouchableOpacity onPress = {() => navigation.navigate('Plant List')}>
-          <IconButton mode='contained' icon='barley' containerColor='green' iconColor='lightgreen'size={35}/>
-        </TouchableOpacity>
-
         <TouchableOpacity onPress = {() => navigation.navigate('Add Plant')}>
           <IconButton mode='contained' icon='plus' containerColor='green' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
@@ -86,7 +82,7 @@ function Home() {
           <IconButton mode='contained' icon='newspaper-variant-multiple' containerColor='green' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress = {() => navigation.navigate('Calendar')}>
+        <TouchableOpacity onPress = {() => navigation.navigate('Plant Calendar')}>
           <IconButton mode='contained' icon='calendar' containerColor='green' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 
@@ -108,7 +104,7 @@ function RootStack() {
       <Stack.Screen name="Articles" component={Articles}/>
       <Stack.Screen name="Badges" component={Badges}/>
       <Stack.Screen name="Plant Info" component={PlantInfo}/>
-      <Stack.Screen name="Calendar" component={Calendar}/>
+      <Stack.Screen name="Plant Calendar" component={PlantCalendar}/>
       <Stack.Screen name="Plant List" component={PlantList}/>
     </Stack.Navigator>
   );
@@ -131,7 +127,9 @@ const styles = StyleSheet.create({
   },
   gridRow:{
     flexDirection:'row',
-    justifyContent:'center'
+    justifyContent:'center',
+    alignItems:'center',
+    left:-10
   },
   bannerBottom:{
     width:'100%',
@@ -152,7 +150,7 @@ const styles = StyleSheet.create({
   },
   surface:{
     height:100,
-    width:100,
+    width:'100%',
     borderRadius:20,
     justifyContent:'center',
     alignItems:'center',

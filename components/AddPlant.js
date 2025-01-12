@@ -1,5 +1,5 @@
-import {Button, Pressable,TouchableOpacity,StyleSheet,View,Text,Image, TouchableHighlight} from 'react-native';
-import {TextInput,RadioButton,SegmentedButtons,Surface} from 'react-native-paper';
+import {Button, ScrollView,TouchableOpacity,StyleSheet,View,Text,Image, TouchableHighlight} from 'react-native';
+import {TextInput,Chip,SegmentedButtons,Surface} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 
@@ -9,9 +9,36 @@ export default function AddPlant(){
     const [species, setSpecies] = useState("");
     const [indoors, setIndoors] = useState('');
     const [iconFile, setIconFile] = useState('');
+    const [native, setNative] = useState(false);
+    const [waterWeek, setWaterWeek] = useState(0);
+
+    // stores strings
+    const [waterDay, setWaterDay] = useState([]);
+
+    const onClickWaterChip = (day) => {
+
+      if (!waterDay.includes(day)){
+        
+        setWaterDay([...waterDay, day]);
+      } else {
+        let temp = [];
+        for (let str of waterDay){
+          if (str !== day){
+            temp.push(str);
+          }
+        }
+        setWaterDay(temp);
+      }
+      console.log(waterDay);
+      
+    }
+
+
 
     return (
-      <View style={styles.container}>
+      <View >
+      <ScrollView >
+        
         <View style={styles.input}>
             <TextInput label='Name' onChangeText={(text) => {setName(text)}}/>
         </View>
@@ -36,6 +63,8 @@ export default function AddPlant(){
           ]}
         />
 
+        <Chip style={{margin:30}} onPress={()=>{setNative(!native)}} mode='outlined' selected={native}>Native Plant?</Chip>
+
         <View style={styles.row}>
           <TouchableOpacity onPress={()=>setIconFile("https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg")}>
             <Surface style={styles.surface}>
@@ -49,12 +78,33 @@ export default function AddPlant(){
             </Surface>
           </TouchableOpacity>
         </View>
-      
-        <View style={styles.submitBtn}>
-            <Button color='white' title="Add me!" onPress={()=>console.log(name+species+indoors+iconFile)}/>
+
+        <View style={styles.waterWeekQue}>
+          <Text>Water every </Text>
+          <TextInput style={styles.shortInput}/>
+          <Text> weeks</Text>
+        </View>
+        
+        <View style={styles.waterDayQue}>
+          <Text>Select watering days</Text>
+          <View style={styles.dayChipRow}>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("mon");}} selected={waterDay.includes("mon")}> Mon</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("tues");}} selected={waterDay.includes("tues")}> Tues</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("wed");}} selected={waterDay.includes("wed")}> Wed</Chip>
+          </View>
+          <View style={styles.dayChipRow}>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("thurs");}} selected={waterDay.includes("thurs")}> Thurs</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("fri");}} selected={waterDay.includes("fri")}> Fri</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("sat");}} selected={waterDay.includes("sat")}> Sat</Chip>
+            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("sun");}} selected={waterDay.includes("sun")}> Sun</Chip>
+          </View>
         </View>
 
+        <View style={styles.submitBtn}>2
+            <Button color='white' title="Add me!" onPress={()=>console.log(name+species+indoors+native+iconFile+waterWeek+waterDay)}/>
+        </View>
         
+      </ScrollView>
       </View>
   
     )
@@ -74,6 +124,12 @@ const styles = StyleSheet.create({
     height:40,
     width:300,
     margin:30,
+    
+  },
+  shortInput:{
+    height:40,
+    width:40,
+    margin:0,
     
   },
   submitBtn:{
@@ -96,7 +152,24 @@ const styles = StyleSheet.create({
     height:100,
     flexDirection: 'row',
     justifyContent: 'space-around'
+  },
+  waterWeekQue:{
+    width:'100%',
+    height:40,
+    flexDirection:'row',
+    justifyContent: 'flex-start',
+    margin:30
+  },
+  dayChipRow:{
+    flexDirection:'row',
+  },
+  dayChip:{
+    width:100,
+    height:30
+  },
+  waterDayQue:{
+    flexDirection:'column',
+    margin:30
   }
-
 
 })
