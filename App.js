@@ -1,8 +1,9 @@
 
-import { Image, StyleSheet, SafeAreaView, View, TouchableOpacity} from 'react-native';
+import { Image, StyleSheet, Dimensions, SafeAreaView, View, TouchableOpacity} from 'react-native';
 import { IconButton,Surface,Button } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
+import {useState,useEffect} from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Articles from './components/Articles.js'
 import AddPlant from './components/AddPlant.js'
@@ -10,68 +11,80 @@ import Badges from './components/Badges.js'
 import PlantInfo from './components/PlantInfo.js'
 import PlantCalendar from './components/PlantCalendar.js';
 import PlantList from './components/PlantList.js';
+import HomePlantIcon from './components/subcomponents/HomePlantIcon.js';
 
 // Home page
-function Home() {
+function Home({route}) {
   const navigation = useNavigation();
+  const h = Dimensions.get('screen').height;
+  const w = Dimensions.get('screen').width;
+
+  const [plants,setPlants] = useState([
+    {
+      name: "Purple flower",
+      species: "purple flower species",
+      indoors: false,
+      native: false,
+      iconFile: "https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg",
+      waterWeek: 1,
+      waterDay: ["mon","wed","fri"],
+      pastWaterings: ["2021-10-01","2021-11-01","2021-12-01"],
+      dateRegistered: "2021-09-01"
+    },
+    {
+      name: "Spider plant",
+      species: "spider plant species",
+      indoors: true,
+      native: false,
+      iconFile: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Green_plants_1.jpg",
+      waterWeek: 2,
+      waterDay: ["mon"],
+      pastWaterings: ["2021-10-01","2021-11-01","2021-12-01"],
+      dateRegistered: "2021-09-01"
+    },
+
+  ]);
+  
+  for (let i = 0; i < plants.length; i++){
+    console.log(plants[i].name);
+  }
+  
+
+  useEffect(() => {
+    if(route.params){
+      //setPlants([...plants,route.params.newPlant]);
+      const newPlants = [];
+      for (let i = 0; i < plants.length; i++){
+        newPlants.push(plants[i]);
+      }
+      newPlants.push(route.params.newPlant);
+      setPlants(newPlants);
+    }
+  },[route.params]);
+  
+  
   return (
     <SafeAreaView style={styles.container}>
 
       <View style={styles.gridRow}>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info",{str:'hello'})}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-          </Surface>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-          </Surface>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-          </Surface>
-        </TouchableOpacity>
+        <HomePlantIcon id={0} plants={plants}/>
+        <HomePlantIcon id={1} plants={plants}/>
+        <HomePlantIcon id={2} plants={plants}/>
       </View>
-
       <View style={styles.gridRow}>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-          </Surface>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-          </Surface>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-          </Surface>
-        </TouchableOpacity>
+        <HomePlantIcon id={3} plants={plants}/>
+        <HomePlantIcon id={4} plants={plants}/>
+        <HomePlantIcon id={5} plants={plants}/>
       </View>
-
       <View style={styles.gridRow}>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-          </Surface>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-          </Surface>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-          </Surface>
-        </TouchableOpacity>
+        <HomePlantIcon id={6} plants={plants}/>
+        <HomePlantIcon id={7} plants={plants}/>
+        <HomePlantIcon id={8} plants={plants}/>
       </View>
 
-      <Button mode="outlined" onPress = {() => navigation.navigate('Plant List')}>All Plants</Button>
+      
+
+      <Button mode="outlined" textColor='green' onPress = {() => navigation.navigate('Plant List')}>All Plants</Button>
       
       <View style={styles.bannerBottom}>
         <TouchableOpacity onPress = {() => navigation.navigate('Add Plant')}>
@@ -80,7 +93,7 @@ function Home() {
 
         <TouchableOpacity onPress = {() => navigation.navigate('Articles')}>
           <IconButton mode='contained' icon='newspaper-variant-multiple' containerColor='green' iconColor='lightgreen'size={35}/>
-        </TouchableOpacity>
+        </TouchableOpacity>2
 
         <TouchableOpacity onPress = {() => navigation.navigate('Plant Calendar')}>
           <IconButton mode='contained' icon='calendar' containerColor='green' iconColor='lightgreen'size={35}/>
@@ -120,7 +133,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     backgroundColor: '#e6e8e6',
     alignItems: 'center',
     justifyContent: 'flex-end'
@@ -148,13 +161,5 @@ const styles = StyleSheet.create({
     borderRadius:25,
     margin:10
   },
-  surface:{
-    height:100,
-    width:'100%',
-    borderRadius:20,
-    justifyContent:'center',
-    alignItems:'center',
-    margin:10
-
-  },
+  
 });

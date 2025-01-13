@@ -3,38 +3,45 @@ import {useNavigation} from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 import { Paragraph } from 'react-native-paper';
 
-export default function PlantInfo(){
-    const navigation = useNavigation();
-    const h = Dimensions.get('screen').height;
-    const w = Dimensions.get('screen').width;
-    console.log(Dimensions.get('screen').height);
-    
+export default function PlantInfo({route}){
+  const h = Dimensions.get('screen').height;
+  const w = Dimensions.get('screen').width;
+  const {plant} = route.params;
+  const garden = "https://upload.wikimedia.org/wikipedia/commons/e/e0/Back_garden_-_Flickr_-_peganum_%281%29.jpg";
+  const indoors = "https://upload.wikimedia.org/wikipedia/commons/d/d5/Potted_plants_featuring_tropicals.jpg";
+
     return (
 
       <ScrollView contentContainerStyle={{ width: w,height: 900,alignItems:'center'}}>
-        <Image source={{width:'100%',height:200,uri:"https://upload.wikimedia.org/wikipedia/commons/b/bb/Spring_April_2010-3.jpg"}}/> 
+        <Image source={{width:'100%',height:200,uri:plant.indoors? indoors:garden}}/> 
         <View style={styles.titleBox}>
-          <Text style={{fontSize:30}}>Name</Text>
-          <Text>Species</Text>
+          <Text style={{fontSize:30}}>{plant.name}</Text>
+          <Text>{plant.species}</Text>
         </View>
 
         <View style={styles.box}>
-          <Image source={{width:50,height:50,uri:"https://upload.wikimedia.org/wikipedia/commons/6/61/Pr%C3%A9cipitation_5_mm_par_heure_pour_mod%C3%A8le_climat.png"}}/>
+          <Image source={{width:70,height:70,uri:"https://upload.wikimedia.org/wikipedia/commons/f/f8/2006-02-13_Drop-impact.jpg"}}/>
           <View style={styles.textBox}>
-            <Text>Last watered</Text>
-            <Text>Next watering</Text>
+            <Text>Last watered:</Text>
+            <Text>{plant.pastWaterings[plant.pastWaterings.length-1]}</Text>
+            <Text>Next watering:</Text>
+            <Text>Nothing here yet</Text>
           </View>
         </View>
 
         <View style={{flexDirection:'row',alignSelf:'flex-start',alignItems:'center'}}>
           <View style={styles.imageBox}>
-            <Image source={{width:125,height:125,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
+            <Image source={{width:125,height:125,uri:plant.iconFile}}/>
           </View>
           <View>
-            <Text>Location</Text>
-            <Text>Native Species</Text>
-            <Text>Status</Text>
-            <Text>Date Registered</Text>
+            <Text>Indoors?</Text>
+            <Text>{plant.indoors.toString()}</Text>
+            <Text>Native Species?</Text>
+            <Text>{plant.native.toString()}</Text>
+            <Text>Status:</Text>
+            <Text>Nothing here yet</Text>
+            <Text>Date Registered:</Text>
+            <Text>{plant.dateRegistered}</Text>
           </View>
         </View>
 

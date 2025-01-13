@@ -1,10 +1,13 @@
-import {Button, ScrollView,TouchableOpacity,StyleSheet,View,Text,Image, TouchableHighlight} from 'react-native';
+import {Button, Dimensions,ScrollView,TouchableOpacity,StyleSheet,View,Text,Image, TouchableHighlight} from 'react-native';
 import {TextInput,Chip,SegmentedButtons,Surface} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 
-export default function AddPlant(){
+export default function AddPlant({route}){
     const navigation = useNavigation();
+    const h = Dimensions.get('screen').height;
+    const w = Dimensions.get('screen').width;
+
     const [name, setName] = useState("");
     const [species, setSpecies] = useState("");
     const [indoors, setIndoors] = useState('');
@@ -33,11 +36,38 @@ export default function AddPlant(){
       
     }
 
+    const getFormattedDate = () => {
+      const today = new Date();
+      let day = today.getDate();
+      let month = today.getMonth()+1;
+      let year = today.getFullYear();
+      if (month < 10){
+        month = '0' + month;
+      }
+      if (day < 10){
+        day = '0' + day;
+      }
+      return(`${year}-${month}-${day}`);
+    }
 
+    const onSubmit = () => {
+      const newPlant = {
+        name: name,
+        species: species,
+        indoors: indoors === 'indoors' ? true : false,
+        native: native,
+        iconFile: iconFile,
+        waterWeek: waterWeek,
+        waterDay: waterDay,
+        pastWaterings: [],
+        dateRegistered: getFormattedDate()
+      }
+      console.log(newPlant);
+      navigation.navigate('Home',{newPlant:newPlant});
+    }
 
     return (
-      <View >
-      <ScrollView >
+      <ScrollView style={{width:w,height:900}}>
         
         <View style={styles.input}>
             <TextInput label='Name' onChangeText={(text) => {setName(text)}}/>
@@ -100,29 +130,20 @@ export default function AddPlant(){
           </View>
         </View>
 
-        <View style={styles.submitBtn}>2
-            <Button color='white' title="Add me!" onPress={()=>console.log(name+species+indoors+native+iconFile+waterWeek+waterDay)}/>
+        <View style={styles.submitBtn}>
+            <Button color='white' title="Add me!" onPress={onSubmit}/>
         </View>
         
       </ScrollView>
-      </View>
   
     )
 }
 
 const styles = StyleSheet.create({
-  container:{
-    width:'100%',
-    height:'100%',
-    flexDirection:'column',
-    justifyContent:'flex-start',
-    alignItems:'center',
-    padding: 30,
-    backgroundColor: 'lightgreen'
-  },
+  
   input:{
     height:40,
-    width:300,
+    width:250,
     margin:30,
     
   },

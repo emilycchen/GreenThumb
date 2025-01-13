@@ -34,7 +34,7 @@ export default function PlantList(){
 
 const styles = StyleSheet.create({
     container:{
-        height:'100%',
+        height:900,
         width:'100%',
         alignItems:'center'
     },

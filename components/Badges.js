@@ -20,9 +20,9 @@ export default function Badges(){
       <View style={styles.container}>
         <View style={styles.gridRow}>
         <TouchableOpacity id='trophy' onPress={handleClick}>
-          <Surface style={styles.surface}>
-            <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/4/48/Awards_of_Garik_Urumyan_2015.jpg"}}/>
-          </Surface>
+            <Surface style={styles.surface}>
+                <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/4/48/Awards_of_Garik_Urumyan_2015.jpg"}}/>
+            </Surface>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>navigation.navigate("Plant Info")}>
           <Surface style={styles.surface}>
