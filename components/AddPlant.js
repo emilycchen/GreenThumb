@@ -2,6 +2,8 @@ import {Button, Dimensions,ScrollView,TouchableOpacity,StyleSheet,View,Text,Imag
 import {TextInput,Chip,SegmentedButtons,Surface} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
+import { formatDistance, subDays,add,parse,format } from "date-fns";
+
 
 export default function AddPlant({route}){
     const navigation = useNavigation();
@@ -13,28 +15,28 @@ export default function AddPlant({route}){
     const [indoors, setIndoors] = useState('');
     const [iconFile, setIconFile] = useState('');
     const [native, setNative] = useState(false);
-    const [waterWeek, setWaterWeek] = useState(0);
+    const [freqWaterByDay, setFreqWaterByDay] = useState(0);
+    const [lastWatered, setLastWatered] = useState("");
 
-    // stores strings
-    const [waterDay, setWaterDay] = useState([]);
 
-    const onClickWaterChip = (day) => {
 
-      if (!waterDay.includes(day)){
+    // const onClickWaterChip = (day) => {
+
+    //   if (!waterDay.includes(day)){
         
-        setWaterDay([...waterDay, day]);
-      } else {
-        let temp = [];
-        for (let str of waterDay){
-          if (str !== day){
-            temp.push(str);
-          }
-        }
-        setWaterDay(temp);
-      }
-      console.log(waterDay);
+    //     setWaterDay([...waterDay, day]);
+    //   } else {
+    //     let temp = [];
+    //     for (let str of waterDay){
+    //       if (str !== day){
+    //         temp.push(str);
+    //       }
+    //     }
+    //     setWaterDay(temp);
+    //   }
+    //   console.log(waterDay);
       
-    }
+    // }
 
     const getFormattedDate = () => {
       const today = new Date();
@@ -49,17 +51,50 @@ export default function AddPlant({route}){
       }
       return(`${year}-${month}-${day}`);
     }
+    const generateFutureDates = (lastWatered, freqWaterByDay) => {
+      const potentialWateringDates = [];
+      let count = 0;
+      let newDate = new Date();
+      let oldDate = parse(lastWatered, 'yyyy-MM-dd', new Date());
+      // generate watering dates within 60 days of last watering
+      while (count <= 60){
+        newDate = add(oldDate, {
+          days: freqWaterByDay
+        });
+        potentialWateringDates.push(format(newDate, 'yyyy-MM-dd'));
+        oldDate = newDate;
+        count += freqWaterByDay;
+      }
+      return(potentialWateringDates);
+    }
+    //console.log('addPlant generate future dates' + generateFutureDates('2025-01-03',7));
+    //HOW TO TOGGLE BETWEEN STRING AND DATE
+    // console.log('testing')
+    // var dateObject = parse('2025-01-13', 'yyyy-MM-dd', new Date())
+    // console.log(dateObject);
+    // console.log(dateObject.getDate());
+    // console.log(dateObject.getMonth());
+    // console.log(dateObject.getFullYear());
+    // console.log(dateObject.toDateString());
+    // var dateString = format(dateObject, 'yyyy-MM-dd');
+    // console.log(dateString)
+
+
+
+    
 
     const onSubmit = () => {
+      console.log('submitting')
+      console.log(lastWatered + ' ' + freqWaterByDay)
       const newPlant = {
         name: name,
         species: species,
         indoors: indoors === 'indoors' ? true : false,
         native: native,
         iconFile: iconFile,
-        waterWeek: waterWeek,
-        waterDay: waterDay,
-        pastWaterings: [],
+        freqWaterByDay: freqWaterByDay,
+        pastWaterings: [lastWatered],
+        potentialWaterings: generateFutureDates(lastWatered,freqWaterByDay),
         dateRegistered: getFormattedDate()
       }
       console.log(newPlant);
@@ -109,26 +144,17 @@ export default function AddPlant({route}){
           </TouchableOpacity>
         </View>
 
-        <View style={styles.waterWeekQue}>
+        <View style={styles.freqWaterByDayQue}>
           <Text>Water every </Text>
-          <TextInput style={styles.shortInput}/>
-          <Text> weeks</Text>
+          <TextInput style={styles.shortInput} onChangeText={(text) => {setFreqWaterByDay(parseInt(text,10))}}/>
+          <Text> days </Text>
+        </View>
+
+        <View style={styles.input}>
+          <TextInput label='Last watered (yyyy-MM-dd)' onChangeText={(text) => {setLastWatered(text)}}/>
         </View>
         
-        <View style={styles.waterDayQue}>
-          <Text>Select watering days</Text>
-          <View style={styles.dayChipRow}>
-            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("mon");}} selected={waterDay.includes("mon")}> Mon</Chip>
-            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("tues");}} selected={waterDay.includes("tues")}> Tues</Chip>
-            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("wed");}} selected={waterDay.includes("wed")}> Wed</Chip>
-          </View>
-          <View style={styles.dayChipRow}>
-            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("thurs");}} selected={waterDay.includes("thurs")}> Thurs</Chip>
-            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("fri");}} selected={waterDay.includes("fri")}> Fri</Chip>
-            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("sat");}} selected={waterDay.includes("sat")}> Sat</Chip>
-            <Chip style={styles.dayChip} onPress={()=>{onClickWaterChip("sun");}} selected={waterDay.includes("sun")}> Sun</Chip>
-          </View>
-        </View>
+        
 
         <View style={styles.submitBtn}>
             <Button color='white' title="Add me!" onPress={onSubmit}/>
@@ -174,7 +200,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around'
   },
-  waterWeekQue:{
+  freqWaterByDayQue:{
     width:'100%',
     height:40,
     flexDirection:'row',
@@ -188,9 +214,5 @@ const styles = StyleSheet.create({
     width:100,
     height:30
   },
-  waterDayQue:{
-    flexDirection:'column',
-    margin:30
-  }
 
 })

@@ -10,6 +10,8 @@ export default function BadgeBlock({}){
                 <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/4/48/Awards_of_Garik_Urumyan_2015.jpg"}}/>
             </Surface>
         </TouchableOpacity>
+
+        
     )
 }
 

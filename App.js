@@ -12,6 +12,7 @@ import PlantInfo from './components/PlantInfo.js'
 import PlantCalendar from './components/PlantCalendar.js';
 import PlantList from './components/PlantList.js';
 import HomePlantIcon from './components/subcomponents/HomePlantIcon.js';
+import { formatDistance, startOfToday,differenceInDays, intervalToDuration, subDays,add,parse,format } from "date-fns";
 
 // Home page
 function Home({route}) {
@@ -26,9 +27,9 @@ function Home({route}) {
       indoors: false,
       native: false,
       iconFile: "https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg",
-      waterWeek: 1,
-      waterDay: ["mon","wed","fri"],
-      pastWaterings: ["2021-10-01","2021-11-01","2021-12-01"],
+      freqWaterByDay: 7,
+      pastWaterings: ["2025-01-05","2025-01-12"],
+      potentialWaterings: ["2025-01-12",'2025-01-19'],
       dateRegistered: "2021-09-01"
     },
     {
@@ -37,19 +38,34 @@ function Home({route}) {
       indoors: true,
       native: false,
       iconFile: "https://upload.wikimedia.org/wikipedia/commons/f/f1/Green_plants_1.jpg",
-      waterWeek: 2,
-      waterDay: ["mon"],
-      pastWaterings: ["2021-10-01","2021-11-01","2021-12-01"],
+      freqWaterByDay: 14,
+      pastWaterings: ["2025-01-09","2025-01-23"],
+      potentialWaterings: ["2025-01-23",'2025-01-19'],
       dateRegistered: "2021-09-01"
     },
 
   ]);
-  
-  for (let i = 0; i < plants.length; i++){
-    console.log(plants[i].name);
+
+  const generateFutureDates = (startDate, freqWaterByDay) => {
+    const potentialWateringDates = [];
+    let count = 0;
+    let newDate = new Date();
+    let oldDate = parse(startDate, 'yyyy-MM-dd', new Date());
+    // generate watering dates within 60 days of last watering
+    while (count <= 60){
+      newDate = add(oldDate, {
+        days: freqWaterByDay
+      });
+      potentialWateringDates.push(format(newDate, 'yyyy-MM-dd'));
+      oldDate = newDate;
+      count += freqWaterByDay;
+    }
+    return(potentialWateringDates);
   }
   
-
+  // NEED FUNCTION TO GENERATE MORE DATES
+  console.log(plants);
+  
   useEffect(() => {
     if(route.params){
       //setPlants([...plants,route.params.newPlant]);
@@ -84,7 +100,7 @@ function Home({route}) {
 
       
 
-      <Button mode="outlined" textColor='green' onPress = {() => navigation.navigate('Plant List')}>All Plants</Button>
+      <Button mode="outlined" textColor='green' onPress = {() => navigation.navigate('Plant List',{plants:plants})}>All Plants</Button>
       
       <View style={styles.bannerBottom}>
         <TouchableOpacity onPress = {() => navigation.navigate('Add Plant')}>
@@ -95,13 +111,11 @@ function Home({route}) {
           <IconButton mode='contained' icon='newspaper-variant-multiple' containerColor='green' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>2
 
-        <TouchableOpacity onPress = {() => navigation.navigate('Plant Calendar')}>
+        <TouchableOpacity onPress = {() => navigation.navigate('Plant Calendar',{plants:plants})}>
           <IconButton mode='contained' icon='calendar' containerColor='green' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress = {() => navigation.navigate('Badges')}>
-          <IconButton mode='contained' icon='trophy' containerColor='green' iconColor='lightgreen'size={35}/>
-        </TouchableOpacity>
+
       </View>
     </SafeAreaView>
   );
@@ -115,7 +129,6 @@ function RootStack() {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Add Plant" component={AddPlant}/>
       <Stack.Screen name="Articles" component={Articles}/>
-      <Stack.Screen name="Badges" component={Badges}/>
       <Stack.Screen name="Plant Info" component={PlantInfo}/>
       <Stack.Screen name="Plant Calendar" component={PlantCalendar}/>
       <Stack.Screen name="Plant List" component={PlantList}/>
