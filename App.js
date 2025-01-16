@@ -11,6 +11,7 @@ import Badges from './components/Badges.js'
 import PlantInfo from './components/PlantInfo.js'
 import PlantCalendar from './components/PlantCalendar.js';
 import PlantList from './components/PlantList.js';
+import FetchPlant from './components/FetchPlant.js';
 import HomePlantIcon from './components/subcomponents/HomePlantIcon.js';
 import { formatDistance, startOfToday,differenceInDays, intervalToDuration, subDays,add,parse,format } from "date-fns";
 
