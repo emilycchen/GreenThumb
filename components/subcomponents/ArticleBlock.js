@@ -4,7 +4,6 @@ export default function ArticleBlock({article}){
     return (
         <View style={styles.infoBox}>
             <Text style={styles.title}>{article.title}</Text>
-            <Text style={styles.date}>{article.date}</Text>
             <Text style={styles.summary}>{article.summary}</Text>
         </View>
       

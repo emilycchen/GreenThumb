@@ -43,16 +43,15 @@ function Home({route}) {
       potentialWaterings: ["2025-01-23",'2025-01-19'],
       dateRegistered: "2021-09-01"
     },
-
   ]);
 
   const generateFutureDates = (startDate, freqWaterByDay) => {
     const potentialWateringDates = [];
     let count = 0;
     let newDate = new Date();
-    let oldDate = parse(startDate, 'yyyy-MM-dd', new Date());
+    let oldDate = startDate;
     // generate watering dates within 60 days of last watering
-    while (count <= 60){
+    while (count <= 30){
       newDate = add(oldDate, {
         days: freqWaterByDay
       });
@@ -63,8 +62,46 @@ function Home({route}) {
     return(potentialWateringDates);
   }
   
-  // NEED FUNCTION TO GENERATE MORE DATES
-  console.log(plants);
+  // NEED FUNCTION TO GENERATE MORE POTENTIAL DATES AND DELETE OLD DATES
+  
+
+  const addPotentialDates = (potentialDates,freqWaterByDay,lastDay) => {
+    let potentialDatesCopy = [];
+    //copy
+    for (let date in potentialDates){
+      potentialDatesCopy.push(date);
+    }
+    // generate dates and add to copy
+    const newDates = generateFutureDates(lastDay,freqWaterByDay);
+    for (let date in newDates){
+      potentialDatesCopy.push(date);
+    }
+    return (potentialDatesCopy);
+  }
+
+  const deleteOldDates = (potentialDates,earliestAllowed) => {
+    let potentialDatesCopy = [];
+    for (let date in potentialDates){
+      if (isBefore(earliestAllowed,parse(date,'yyyy-MM-dd',new Date()))){
+        potentialDatesCopy.push(date);
+      }
+    }
+    return(potentialDatesCopy);
+  }
+  // THIS DOES NOT WORK, WAITING FOR DATABASE 
+  for (let plant of plants){
+    const lastDay = parse(plant.potentialWaterings[plant.potentialWaterings.length-1], 'yyyy-MM-dd',new Date());
+    const firstDay = parse(plant.potentialWaterings[0], 'yyyy-MM-dd',new Date());
+    const today = startOfToday();
+    if (differenceInDays(lastDay,today) < 30){
+      addPotentialDates(plant.potentialWaterings,plant.freqWaterByDay,lastDay);
+    }
+    if (differenceInDays(today,firstDay) > 30){
+      deleteOldDates(plant.potentialWaterings,subDays(today,30));
+    }
+  }
+
+  
   
   useEffect(() => {
     if(route.params){
@@ -77,7 +114,9 @@ function Home({route}) {
       setPlants(newPlants);
     }
   },[route.params]);
-  
+
+  console.log(plants);
+
   
   return (
     <SafeAreaView style={styles.container}>

@@ -85,7 +85,6 @@ export default function AddPlant({route}){
 
     const onSubmit = () => {
       console.log('submitting')
-      console.log(lastWatered + ' ' + freqWaterByDay)
       const newPlant = {
         name: name,
         species: species,
