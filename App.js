@@ -1,5 +1,5 @@
 
-import { Image, StyleSheet, Dimensions, SafeAreaView, View, TouchableOpacity} from 'react-native';
+import { Image, Text,StyleSheet, Dimensions, SafeAreaView, View, TouchableOpacity} from 'react-native';
 import { IconButton,Surface,Button } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
@@ -120,7 +120,7 @@ function Home({route}) {
   
   return (
     <SafeAreaView style={styles.container}>
-
+      <Text>user name is {username}</Text>
       <View style={styles.gridRow}>
         <HomePlantIcon id={0} plants={plants}/>
         <HomePlantIcon id={1} plants={plants}/>
