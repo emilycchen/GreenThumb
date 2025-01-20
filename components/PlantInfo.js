@@ -47,7 +47,7 @@ export default function PlantInfo({route}){
             
         }
         fetchPlant()
-        console.log('fetched ' + plant_id)
+        //console.log('fetched ' + plant_id)
         
     })
     

@@ -154,7 +154,7 @@ export default function Home({route}) {
       <Button mode="outlined" textColor='green' onPress = {() => navigation.navigate('Plant List',{plants:plants})}>All Plants</Button>
       
       <View style={styles.bannerBottom}>
-        <TouchableOpacity onPress = {() => navigation.navigate('Add Plant')}>
+        <TouchableOpacity onPress = {() => navigation.navigate('Add Plant',{owners_username: username})}>
           <IconButton mode='contained' icon='plus' containerColor='green' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 

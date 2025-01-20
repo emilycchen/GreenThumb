@@ -8,7 +8,7 @@ export default function PlantListBlock({plant}){
     return(
        <TouchableOpacity onPress={()=>navigation.navigate("Plant Info",{plant})}>
             <Surface style={styles.surface}>        
-                <Image source={{width:75,height:75,uri:plant.iconFile}}/>        
+                <Image source={{width:75,height:75,uri:plant.icon_file_path}}/>        
                 <View style={styles.description}>    
                     <Text style={{fontSize: 20}}>{plant.name}</Text>
                     <Text>{plant.species}</Text>
