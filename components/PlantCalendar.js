@@ -39,6 +39,7 @@ export default function PlantCalendar({route}){
       }
       return(`${year}-${month}-${day}`);
     }
+    
     const navigation = useNavigation();
     const [selectedDay, setSelectedDay] = useState(getFormattedDate());
     console.log(getFormattedDate());
@@ -47,7 +48,7 @@ export default function PlantCalendar({route}){
     let markedDates = {};
     let plantsPerDate = {};
     for (let plant of plants) {
-      for (let date of plant.potentialWaterings){
+      for (let date of plant.water_schedule){
         markedDates[date] = {selected:false,marked:true,dotColor:'dodgerblue'}
         if (date in plantsPerDate){
           plantsPerDate[date].push(plant.name);
@@ -68,7 +69,7 @@ export default function PlantCalendar({route}){
       // find plant
       for (let plant of plants){
         if (plant.name === plantName){
-          if (plant.pastWaterings.includes(dateString)){
+          if (plant.water_record.includes(dateString)){
             return true;
           } else { return false; }
         }
@@ -93,7 +94,8 @@ export default function PlantCalendar({route}){
                   <Chip key={i} 
                   value={i + 1}
                   style={{margin: 5}}
-                  selected={isWatered(plantsPerDate[selectedDay][i],selectedDay)}>
+                  selected={isWatered(plantsPerDate[selectedDay][i],selectedDay)}
+                  >
                     {plantsPerDate[selectedDay][i]}
                   </Chip>
                 )
