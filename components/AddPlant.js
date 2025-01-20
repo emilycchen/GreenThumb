@@ -97,7 +97,9 @@ export default function AddPlant({route}){
         dateRegistered: getFormattedDate()
       }
       console.log(newPlant);
-      navigation.navigate('Home',{newPlant:newPlant});
+      navigation.navigate('Home');
+      //REMOVED PROP 
+      //navigation.navigate('Home',{newPlant:newPlant});
     }
 
     return (

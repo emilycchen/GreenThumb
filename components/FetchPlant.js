@@ -44,4 +44,4 @@ const PlantList = () => {
   );
 };
 
-export default FetchPlant;
+//export default FetchPlant;
