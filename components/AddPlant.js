@@ -38,6 +38,45 @@ export default function AddPlant({route}){
       
     // }
 
+    const API_TOKEN = '9iHPQV4igm0TwWTaRCFHBewJ9cswoP93ZvLGNdbxbbc'
+    const BASE_URL = 'https://trefle.io/api/v1';
+
+    const searchPlants = async () => {
+        if (!searchQuery.trim()) return;
+
+        setLoading(true);
+        try {
+            const response = await fetch(
+                `${BASE_URL}/plants/search?token=${API_TOKEN}&q=${encodeURIComponent(searchQuery)}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch plant data');
+            }
+
+            const data = await response.json();
+            setSearchResults(data.data);
+        } catch (err) {
+            console.error('Error fetching plants:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const selectPlant = (plant) => {
+      setSelectedPlant(plant);
+      setName(plant.common_name || '');
+      setSpecies(plant.scientific_name || '');
+      setIconFile(plant.image_url || '');
+      setSearchResults([]); // Clear search results
+      setSearchQuery(''); // Clear search query
+    };
+
     const getFormattedDate = () => {
       const today = new Date();
       let day = today.getDate();
