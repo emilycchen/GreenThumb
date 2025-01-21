@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TextInput} from 'react-native-paper';
 import supabase from '../supabaseClient';
@@ -33,6 +33,9 @@ export default function Login() {
 
     return(
         <View>
+            <View style={{height:200,width:200}}>
+                <Image style={{width: 200,height: 200,resizeMode: 'contain'}} source={require('../assets/1logo.png')}/>
+            </View>
             <Text>Username</Text>
             <TextInput onChangeText={(text) => setUsername(text)}/>
             <Text>Password</Text>

@@ -79,7 +79,6 @@ export default function Home({route}) {
   }
   
   // NEED FUNCTION TO GENERATE MORE POTENTIAL DATES AND DELETE OLD DATES
-  
 
   const addPotentialDates = (potentialDates,freqWaterByDay,lastDay) => {
     let potentialDatesCopy = [];

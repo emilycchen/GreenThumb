@@ -58,7 +58,6 @@ export default function PlantInfo({route}){
         
     })
 
-    //const [nextWatering, setNextWatering] = useState('')
     let nextWatering = ''
     const findNextWatering = () => {
       for (let date of water_schedule){
@@ -72,6 +71,9 @@ export default function PlantInfo({route}){
       }
     }
     findNextWatering()
+
+    //const [nextWatering, setNextWatering] = useState('')
+    
 
     return (
 
