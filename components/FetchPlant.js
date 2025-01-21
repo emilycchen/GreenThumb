@@ -45,4 +45,3 @@ const PlantList = () => {
 };
 
 //export default FetchPlant;
-
