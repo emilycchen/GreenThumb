@@ -42,30 +42,31 @@
 //     )
 // }
 
-// const styles = StyleSheet.create({
-//   container:{
-//     width:'100%',
-//     height:950,
-//     flexDirection:'column',
-//     justifyContent:'flex-start',
-//     alignItems:'center',
-//     padding: 30,
-//   }
-// })
+
 import React from 'react';
 import articlesData from './articles.json';
-import {Button, ScrollView,View, Text,StyleSheet} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {Linking, ScrollView, View, Text, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
 
 const ArticlesList = () => {
   return (
-    <View>
-      {articlesData.map((article, index) => (
-        <View key={index} style={styles.infoBox}>
-          <Text style={styles.title}>{article?.title}</Text>
-          <Text style={styles.sentence}>{article?.sentence}</Text>
-        </View>      
-      ))}
+    <View style={styles.background}>
+      <ScrollView>
+        <View style={styles.infoBox}>
+          <Text style={styles.pageTitle}>{"Articles"}</Text>
+        </View> 
+        {articlesData.map((article, index) => (
+          <TouchableOpacity 
+            key={index}
+            onPress={() => Linking.openURL(article.url)}
+          >
+            <View style={styles.articleBlock}>
+              <Text style={styles.title}>{article?.title || "No Title"}</Text>
+              <Text style={styles.date}>{article?.date || "No Date"}</Text>
+              <Text style={styles.sentence}>{article?.sentence || "No Description"}</Text>
+            </View>      
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -73,14 +74,40 @@ const ArticlesList = () => {
 export default ArticlesList
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: '#f8f4ed',
+    padding: 15,
+    paddingTop: 40
+  },
+  pageTitle: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#5e775f',
+  },
   infoBox: {
     padding: 10,
   },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
+  articleBlock: {
+    backgroundColor: '#ffffff',
+    padding: 13,
+    borderRadius: 10,
+    marginBottom: 10,
   },
-  summary: {
-    fontSize: 14,
-  }
+  title: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#5e775f',
+  },
+  date: {
+    fontSize: 10,
+    color: '#c2c1be',
+    paddingTop: 2,
+    paddingBottom: 2
+  },
+  sentence: {
+    fontSize: 10,
+    color: '#5e775f',
+    paddingBottom: 7
+  },
 });
