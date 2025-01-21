@@ -17,7 +17,9 @@ export default function AddPlant({route}){
     const [is_indoors, setIsIndoors] = useState(false)
     const [icon_file_path, setIconFilePath] = useState('')
     const [water_frequency, setWaterFrequency] = useState('')
-    const [water_record, setWaterRecord] = useState('')
+    const [water_record, setWaterRecord] = useState([])
+    let water_schedule = []
+
 
     const getFormattedDate = () => {
       const today = new Date();
@@ -33,7 +35,7 @@ export default function AddPlant({route}){
       return(`${year}-${month}-${day}`);
     }
     const generateFutureDates = (lastWatered, freqWaterByDay) => {
-      const potentialWateringDates = [];
+      let potentialWateringDates = [];
       let count = 0;
       let newDate = new Date();
       let oldDate = parse(lastWatered, 'yyyy-MM-dd', new Date());
@@ -50,11 +52,10 @@ export default function AddPlant({route}){
     }
 
     const handleSubmit = async () => {
-
         //data and error vars
         const {data, error} = await supabase
           .from('Plants')
-          .insert([{owners_username, name, species, is_native, is_indoors,icon_file_path,water_frequency,water_record}]) // inserts new row, vars must be same name as col names
+          .insert([{owners_username, name, species, is_native, is_indoors,icon_file_path,water_frequency,water_record,water_schedule}]) // inserts new row, vars must be same name as col names
     
         if (error) {
           console.log(error)
@@ -124,7 +125,12 @@ export default function AddPlant({route}){
         
 
         <View style={styles.submitBtn}>
-            <Button color='white' title="Add me!" onPress={handleSubmit}/>
+            <Button color='white' title="Add me!" onPress={()=>{
+              water_schedule = generateFutureDates(water_record[0],water_frequency)
+              //console.log(water_record)
+              //console.log(generateFutureDates(lastWatered,water_frequency))
+              handleSubmit()
+            }}/>
         </View>
         
       </ScrollView>

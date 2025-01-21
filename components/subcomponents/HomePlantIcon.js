@@ -15,7 +15,7 @@ export default function HomePlantIcon({display_id,plants}){
     return(
         <TouchableOpacity onPress={handlePress}>
             <Surface style={styles.surface}>
-                <Image source={{width:75, height:75, uri: plant!==null? plant.icon_file_path:"https://upload.wikimedia.org/wikipedia/commons/1/18/Color-white.JPG"}}/>
+                <Image source={{width:75, height:75, uri: plant!==null ? plant.icon_file_path : "https://upload.wikimedia.org/wikipedia/commons/1/18/Color-white.JPG"}}/>
             </Surface>
         </TouchableOpacity>
     );

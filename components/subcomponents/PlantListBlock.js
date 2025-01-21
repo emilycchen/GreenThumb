@@ -6,7 +6,7 @@ import { useState } from 'react';
 export default function PlantListBlock({plant}){
     const navigation = useNavigation();
     return(
-       <TouchableOpacity onPress={()=>navigation.navigate("Plant Info",{plant})}>
+       <TouchableOpacity onPress={()=>navigation.navigate("Plant Info",{plant_id:plant.plant_id})}>
             <Surface style={styles.surface}>        
                 <Image source={{width:75,height:75,uri:plant.icon_file_path}}/>        
                 <View style={styles.description}>    

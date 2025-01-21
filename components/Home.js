@@ -15,6 +15,7 @@ export default function Home({route}) {
 
   const [plants,setPlants] = useState([]);
 
+  //console.log(username)
 
   // fetch user's plants
   useEffect( () => {
@@ -39,6 +40,7 @@ export default function Home({route}) {
                         icon_file_path: item.icon_file_path,
                         water_frequency: item.water_frequency,
                         water_record: item.water_record,
+                        water_schedule: item.water_schedule,
                         created_at: item.created_at,
                     }
                     tempPlantList.push(plant)
@@ -54,6 +56,7 @@ export default function Home({route}) {
     // console.log('plant list :')
     //console.log(plants)
     // console.log(username)
+    //console.log('home')
 
 
   // date functions
