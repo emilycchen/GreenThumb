@@ -18,6 +18,9 @@ export default function AddPlant({route}){
     const [icon_file_path, setIconFilePath] = useState('')
     const [water_frequency, setWaterFrequency] = useState('')
     const [water_record, setWaterRecord] = useState([])
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+
     let water_schedule = []
 
 
@@ -25,31 +28,32 @@ export default function AddPlant({route}){
     const BASE_URL = 'https://trefle.io/api/v1';
 
     const searchPlants = async () => {
-        if (!searchQuery.trim()) return;
-
-        setLoading(true);
-        try {
-            const response = await fetch(
-                `${BASE_URL}/plants/search?token=${API_TOKEN}&q=${encodeURIComponent(searchQuery)}`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch plant data');
-            }
-
-            const data = await response.json();
-            setSearchResults(data.data);
-        } catch (err) {
-            console.error('Error fetching plants:', err);
-        } finally {
-            setLoading(false);
-        }
+      if (!searchQuery.trim()) return;
+  
+      setLoading(true);
+      try {
+          const response = await fetch(
+              `${BASE_URL}/plants/search?token=${API_TOKEN}&q=${encodeURIComponent(searchQuery)}`,
+              {
+                  headers: {
+                      'Content-Type': 'application/json'
+                  }
+              }
+          );
+  
+          if (!response.ok) {
+              throw new Error('Failed to fetch plant data');
+          }
+  
+          const data = await response.json();
+          setSearchResults(data.data);
+      } catch (err) {
+          console.error('Error fetching plants:', err);
+      } finally {
+          setLoading(false);
+      }
     };
+  
 
     const selectPlant = (plant) => {
       setSelectedPlant(plant);
@@ -110,6 +114,18 @@ export default function AddPlant({route}){
 
     return (
       <ScrollView style={{width:w,height:900}}>
+        <TextInput
+          label="Search Plants"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onSubmitEditing={searchPlants}
+        />
+        {searchResults.map((plant) => (
+          <TouchableOpacity key={plant.id} onPress={() => selectPlant(plant)}>
+            <Text>{plant.common_name || plant.scientific_name}</Text>
+            {plant.image_url && <Image source={{ uri: plant.image_url }} style={{ width: 50, height: 50 }} />}
+          </TouchableOpacity>
+        ))}
         
         <View style={styles.input}>
             <TextInput label='Name' onChangeText={(text) => {setName(text)}}/>
