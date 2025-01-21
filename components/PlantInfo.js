@@ -19,9 +19,11 @@ export default function PlantInfo({route}){
   const [is_native, setIsNative] = useState(false)
   const [is_indoors, setIsIndoors] = useState(false)
   const [icon_file_path, setIconFilePath] = useState('')
-  const [water_frequency, setWaterFrequency] = useState('')
-  const [water_record, setWaterRecord] = useState('')
+  const [water_frequency, setWaterFrequency] = useState([])
+  const [water_record, setWaterRecord] = useState([])
+  const [water_schedule, setWaterSchedule] = useState([])
   const [created_at, setCreatedAt] = useState(null)
+
 
     useEffect(() => {
         const fetchPlant = async () => {
@@ -42,12 +44,13 @@ export default function PlantInfo({route}){
               setIconFilePath(data.icon_file_path)
               setWaterFrequency(data.water_frequency)
               setWaterRecord(data.water_record)
+              setWaterSchedule(data.water_schedule)
               setCreatedAt(data.created_at)
             }
             
         }
         fetchPlant()
-        console.log('fetched ' + plant_id)
+        //console.log('fetched ' + plant_id)
         
     })
     

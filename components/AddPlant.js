@@ -3,40 +3,23 @@ import {TextInput,Chip,SegmentedButtons,Surface} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import { formatDistance, subDays,add,parse,format } from "date-fns";
-
+import supabase from '../supabaseClient';
 
 export default function AddPlant({route}){
     const navigation = useNavigation();
     const h = Dimensions.get('screen').height;
     const w = Dimensions.get('screen').width;
 
-    const [name, setName] = useState("");
-    const [species, setSpecies] = useState("");
-    const [indoors, setIndoors] = useState('');
-    const [iconFile, setIconFile] = useState('');
-    const [native, setNative] = useState(false);
-    const [freqWaterByDay, setFreqWaterByDay] = useState(0);
-    const [lastWatered, setLastWatered] = useState("");
+    const {owners_username} = route.params 
+    const [name, setName] = useState('')
+    const [species, setSpecies] = useState('')
+    const [is_native, setIsNative] = useState(false)
+    const [is_indoors, setIsIndoors] = useState(false)
+    const [icon_file_path, setIconFilePath] = useState('')
+    const [water_frequency, setWaterFrequency] = useState('')
+    const [water_record, setWaterRecord] = useState([])
+    let water_schedule = []
 
-
-
-    // const onClickWaterChip = (day) => {
-
-    //   if (!waterDay.includes(day)){
-        
-    //     setWaterDay([...waterDay, day]);
-    //   } else {
-    //     let temp = [];
-    //     for (let str of waterDay){
-    //       if (str !== day){
-    //         temp.push(str);
-    //       }
-    //     }
-    //     setWaterDay(temp);
-    //   }
-    //   console.log(waterDay);
-      
-    // }
 
     const API_TOKEN = '9iHPQV4igm0TwWTaRCFHBewJ9cswoP93ZvLGNdbxbbc'
     const BASE_URL = 'https://trefle.io/api/v1';
@@ -91,7 +74,7 @@ export default function AddPlant({route}){
       return(`${year}-${month}-${day}`);
     }
     const generateFutureDates = (lastWatered, freqWaterByDay) => {
-      const potentialWateringDates = [];
+      let potentialWateringDates = [];
       let count = 0;
       let newDate = new Date();
       let oldDate = parse(lastWatered, 'yyyy-MM-dd', new Date());
@@ -106,39 +89,23 @@ export default function AddPlant({route}){
       }
       return(potentialWateringDates);
     }
-    //console.log('addPlant generate future dates' + generateFutureDates('2025-01-03',7));
-    //HOW TO TOGGLE BETWEEN STRING AND DATE
-    // console.log('testing')
-    // var dateObject = parse('2025-01-13', 'yyyy-MM-dd', new Date())
-    // console.log(dateObject);
-    // console.log(dateObject.getDate());
-    // console.log(dateObject.getMonth());
-    // console.log(dateObject.getFullYear());
-    // console.log(dateObject.toDateString());
-    // var dateString = format(dateObject, 'yyyy-MM-dd');
-    // console.log(dateString)
 
-
-
+    const handleSubmit = async () => {
+        //data and error vars
+        const {data, error} = await supabase
+          .from('Plants')
+          .insert([{owners_username, name, species, is_native, is_indoors,icon_file_path,water_frequency,water_record,water_schedule}]) // inserts new row, vars must be same name as col names
     
-
-    const onSubmit = () => {
-      console.log('submitting')
-      const newPlant = {
-        name: name,
-        species: species,
-        indoors: indoors === 'indoors' ? true : false,
-        native: native,
-        iconFile: iconFile,
-        freqWaterByDay: freqWaterByDay,
-        pastWaterings: [lastWatered],
-        potentialWaterings: generateFutureDates(lastWatered,freqWaterByDay),
-        dateRegistered: getFormattedDate()
-      }
-      console.log(newPlant);
-      navigation.navigate('Home');
-      //REMOVED PROP 
-      //navigation.navigate('Home',{newPlant:newPlant});
+        if (error) {
+          console.log(error)
+          setFormError(error)
+        }
+        if (data){
+          console.log(data)
+          setFormError(null)
+        }
+        console.log('submitted')
+        navigation.navigate('Home',{username:owners_username})
     }
 
     return (
@@ -154,30 +121,30 @@ export default function AddPlant({route}){
         
         <SegmentedButtons
           style={{margin:30}}
-          value={indoors}
-          onValueChange={setIndoors}
+          value={is_indoors}
+          onValueChange={setIsIndoors}
           buttons={[
             {
-              value: 'indoors',
+              value: true,
               label: 'Indoors',
             },
             {
-              value: 'outdoors',
+              value: false,
               label: 'Outdoors',
             },
           ]}
         />
 
-        <Chip style={{margin:30}} onPress={()=>{setNative(!native)}} mode='outlined' selected={native}>Native Plant?</Chip>
+        <Chip style={{margin:30}} onPress={()=>{setIsNative(!is_native)}} mode='outlined' selected={is_native}>Native Plant?</Chip>
 
         <View style={styles.row}>
-          <TouchableOpacity onPress={()=>setIconFile("https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg")}>
+          <TouchableOpacity onPress={()=>setIconFilePath("https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg")}>
             <Surface style={styles.surface}>
               <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
             </Surface>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={()=>setIconFile("https://upload.wikimedia.org/wikipedia/commons/f/f1/Green_plants_1.jpg")}>
+          <TouchableOpacity onPress={()=>setIconFilePath("https://upload.wikimedia.org/wikipedia/commons/f/f1/Green_plants_1.jpg")}>
             <Surface style={styles.surface}>
               <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/f/f1/Green_plants_1.jpg"}}/>
             </Surface>
@@ -186,18 +153,23 @@ export default function AddPlant({route}){
 
         <View style={styles.freqWaterByDayQue}>
           <Text>Water every </Text>
-          <TextInput style={styles.shortInput} onChangeText={(text) => {setFreqWaterByDay(parseInt(text,10))}}/>
+          <TextInput style={styles.shortInput} onChangeText={(text) => {setWaterFrequency(parseInt(text,10))}}/>
           <Text> days </Text>
         </View>
 
         <View style={styles.input}>
-          <TextInput label='Last watered (yyyy-MM-dd)' onChangeText={(text) => {setLastWatered(text)}}/>
+          <TextInput label='Last watered (yyyy-MM-dd)' onChangeText={(text) => {setWaterRecord([text])}}/>
         </View>
         
         
 
         <View style={styles.submitBtn}>
-            <Button color='white' title="Add me!" onPress={onSubmit}/>
+            <Button color='white' title="Add me!" onPress={()=>{
+              water_schedule = generateFutureDates(water_record[0],water_frequency)
+              //console.log(water_record)
+              //console.log(generateFutureDates(lastWatered,water_frequency))
+              handleSubmit()
+            }}/>
         </View>
         
       </ScrollView>

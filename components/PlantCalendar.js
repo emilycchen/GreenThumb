@@ -1,10 +1,10 @@
 import {Button, StyleSheet,View,Text,ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { Chip } from 'react-native-paper';
 import { formatDistance, subDays,add } from "date-fns";
-
+import supabase from '../supabaseClient';
 
 {/* <Calendar 
           style={styles.calendar}
@@ -26,6 +26,20 @@ import { formatDistance, subDays,add } from "date-fns";
 export default function PlantCalendar({route}){
   const {plants} = route.params;
   
+  // save plants as a state var with only neccessary fields
+  let temp = []
+  for (let i = 0; i < plants.length; i++){
+    let plant = {
+      name: plants[i].name,
+      water_record: plants[i].water_record,
+      water_schedule: plants[i].water_schedule,
+    }
+    temp.push(plant)
+
+  }
+  const [plantsCopy, setPlantsCopy] = useState(temp)
+  //console.log(plantsCopy)
+  
     const getFormattedDate = () => {
       const today = new Date();
       let day = today.getDate();
@@ -39,15 +53,16 @@ export default function PlantCalendar({route}){
       }
       return(`${year}-${month}-${day}`);
     }
+    
     const navigation = useNavigation();
     const [selectedDay, setSelectedDay] = useState(getFormattedDate());
-    console.log(getFormattedDate());
 
     // marking dates initially
     let markedDates = {};
     let plantsPerDate = {};
-    for (let plant of plants) {
-      for (let date of plant.potentialWaterings){
+
+    for (let plant of plantsCopy) {
+      for (let date of plant.water_schedule){
         markedDates[date] = {selected:false,marked:true,dotColor:'dodgerblue'}
         if (date in plantsPerDate){
           plantsPerDate[date].push(plant.name);
@@ -62,19 +77,68 @@ export default function PlantCalendar({route}){
     //   plantsPerDate[selectedDay] = [];
     // }
     markedDates[selectedDay] = {selected:true,marked:false,selectedColor:'green'};
-    console.log(markedDates)
 
     const isWatered = (plantName,dateString) => {
       // find plant
-      for (let plant of plants){
+      for (let plant of plantsCopy){
         if (plant.name === plantName){
-          if (plant.pastWaterings.includes(dateString)){
+          if (plant.water_record.includes(dateString)){
             return true;
           } else { return false; }
         }
       }
     }
-    
+
+    const getPlant = (plantName) => {
+      for (let plant of plantsCopy){
+        if (plant.name === plantName){
+          return plant;
+        }
+      }
+    }
+
+    // console.log(getPlant('Purslane').water_record)
+    // console.log(isWatered('Purslane','2025-01-01'))
+
+    // UNUSED
+    const fetchWaterRecord = (plantName) => {
+      const [record,setRecord] = useState([])
+      const fetchWaterRecordAux = async () => {
+        const {data, error} = await supabase
+            .from('Plants')
+            .select()
+            .eq('name', plantName) 
+            .single()
+        
+        if (error) {
+            console.log(error)
+        }
+        if (data){
+          setRecord(data.water_record)
+        }
+      }
+      fetchWaterRecordAux()
+      return (record.slice())
+    }
+    // console.log('water record')
+    // console.log(fetchWaterRecord('Purslane'))
+
+    const setWaterRecord = async (plantName, water_record) => {
+      const {data, error} = await supabase
+          .from('Plants')
+          .update({ water_record })
+          .eq('name', plantName)
+      
+      if (error) {
+          console.log(error)
+      }
+      if (data) {
+        console.log('updated')
+      }
+    }
+
+
+
     return (
       <View>
         <Calendar 
@@ -93,13 +157,44 @@ export default function PlantCalendar({route}){
                   <Chip key={i} 
                   value={i + 1}
                   style={{margin: 5}}
-                  selected={isWatered(plantsPerDate[selectedDay][i],selectedDay)}>
+                  onPress={() => {
+                    const currentPlant = getPlant(plantsPerDate[selectedDay][i])
+                    console.log(currentPlant.name)
+                    console.log(isWatered(currentPlant.name,selectedDay))
+                    if (!isWatered(currentPlant.name,selectedDay)){
+                      // saving changes in tempWaterRecord
+                      let tempWaterRecord = []
+                      for (let date of currentPlant.water_record){
+                        tempWaterRecord.push(date)
+                      }
+                      tempWaterRecord.push(selectedDay)
+                      // saving tempWaterRecord to plantsCopy
+                      let tempPlantsCopy = []
+                      for (let i = 0; i < plantsCopy.length; i++){
+                        let plant = {
+                          name: plantsCopy[i].name,
+                          water_record: currentPlant.name === plantsCopy[i].name ? tempWaterRecord : plantsCopy[i].water_record,
+                          water_schedule: plantsCopy[i].water_schedule,
+                        }
+                        tempPlantsCopy.push(plant)
+                      }
+                      setPlantsCopy(tempPlantsCopy)
+                      console.log('added selectedDay to water_record')
+                      console.log(isWatered(currentPlant.name,selectedDay))} 
+                  }}
+                  selected={isWatered(plantsPerDate[selectedDay][i],selectedDay)}
+                  >
                     {plantsPerDate[selectedDay][i]}
                   </Chip>
                 )
               }
             </View>
           </ScrollView>
+          <Button title='Save Changes' onPress={() => {
+            for (let plant of plantsCopy){
+              setWaterRecord(plant.name, plant.water_record)
+            }
+          }}/>
         </View>
         
       </View>
@@ -117,7 +212,7 @@ const styles = StyleSheet.create({
   listBox:{
     backgroundColor:'white',
     width: '90%',
-    height:200,
+    height:190,
     margin:10,
     borderRadius:50,
     padding: 20
