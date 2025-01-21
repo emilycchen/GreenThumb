@@ -42,6 +42,7 @@ export default function Home({route}) {
                         water_record: item.water_record,
                         water_schedule: item.water_schedule,
                         created_at: item.created_at,
+                        notes: item.notes
                     }
                     tempPlantList.push(plant)
                 }
@@ -163,10 +164,14 @@ export default function Home({route}) {
 
         <TouchableOpacity onPress = {() => navigation.navigate('Articles')}>
           <IconButton mode='contained' icon='newspaper-variant-multiple' containerColor='green' iconColor='lightgreen'size={35}/>
-        </TouchableOpacity>2
+        </TouchableOpacity>
 
         <TouchableOpacity onPress = {() => navigation.navigate('Plant Calendar',{plants:plants})}>
           <IconButton mode='contained' icon='calendar' containerColor='green' iconColor='lightgreen'size={35}/>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress = {() => navigation.navigate('Login')}>
+          <IconButton mode='contained' icon='door-open' containerColor='green' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 
 

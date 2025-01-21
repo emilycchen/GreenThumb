@@ -3,8 +3,10 @@ import {useNavigation} from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 import { Paragraph } from 'react-native-paper';
 import { useState, useEffect } from 'react';
-import { set } from 'date-fns';
+import { getDate, set } from 'date-fns';
 import supabase from '../supabaseClient';
+import { formatDistance, subDays,add, isAfter, parse } from "date-fns";
+
 
 export default function PlantInfo({route}){
   const h = Dimensions.get('screen').height;
@@ -23,6 +25,7 @@ export default function PlantInfo({route}){
   const [water_record, setWaterRecord] = useState([])
   const [water_schedule, setWaterSchedule] = useState([])
   const [created_at, setCreatedAt] = useState(null)
+  const [notes, setNotes] = useState('')
 
 
     useEffect(() => {
@@ -46,6 +49,7 @@ export default function PlantInfo({route}){
               setWaterRecord(data.water_record)
               setWaterSchedule(data.water_schedule)
               setCreatedAt(data.created_at)
+              setNotes(data.notes)
             }
             
         }
@@ -53,23 +57,39 @@ export default function PlantInfo({route}){
         //console.log('fetched ' + plant_id)
         
     })
-    
+
+    //const [nextWatering, setNextWatering] = useState('')
+    let nextWatering = ''
+    const findNextWatering = () => {
+      for (let date of water_schedule){
+        // next watering is either after today or on today if plant has not been watered today
+        if (isAfter(parse(date, 'yyyy-MM-dd', new Date()), Date()) ||
+            (getDate(parse(date, 'yyyy-MM-dd', new Date())) === getDate(Date()) && !water_record.includes(date))){
+          //setNextWatering(date)
+          nextWatering = date
+          break
+        }
+      }
+    }
+    findNextWatering()
+
     return (
 
       <ScrollView contentContainerStyle={{ width: w,height: 900,alignItems:'center'}}>
         <Image source={{width:'100%',height:200,uri:is_indoors? indoors:garden}}/> 
         <View style={styles.titleBox}>
-          <Text style={{fontSize:30}}>{name}</Text>
+          <Text style={{fontSize:30, margin:10}}>{name}</Text>
           <Text>{species}</Text>
         </View>
 
         <View style={styles.box}>
           <Image source={{width:70,height:70,uri:"https://upload.wikimedia.org/wikipedia/commons/f/f8/2006-02-13_Drop-impact.jpg"}}/>
           <View style={styles.textBox}>
+            <Text>Watering</Text>
             <Text>Last watered:</Text>
             <Text>{water_record? water_record[water_record.length-1] : 'No waterings'}</Text>
             <Text>Next watering:</Text>
-            <Text>Nothing here yet</Text>
+            <Text>{nextWatering}</Text>
           </View>
         </View>
 
@@ -90,9 +110,11 @@ export default function PlantInfo({route}){
         </View>
 
         <View>
-          <Text>More Info</Text>
+          <Text>Notes</Text>
           <View style={styles.box}>
-            <View style={{width:'90%',height:200}}/>
+            <View style={{width:'90%',height:100}}>
+              <Text>{notes}</Text>
+            </View>
           </View>
         </View>
 

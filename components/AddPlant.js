@@ -18,11 +18,13 @@ export default function AddPlant({route}){
     const [icon_file_path, setIconFilePath] = useState('')
     const [water_frequency, setWaterFrequency] = useState('')
     const [water_record, setWaterRecord] = useState([])
-    const [searchQuery, setSearchQuery] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
+    const [notes, setNotes] = useState('')
 
     let water_schedule = []
 
+    // plant API
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
 
     const API_TOKEN = '9iHPQV4igm0TwWTaRCFHBewJ9cswoP93ZvLGNdbxbbc'
     const BASE_URL = 'https://trefle.io/api/v1';
@@ -96,9 +98,10 @@ export default function AddPlant({route}){
 
     const handleSubmit = async () => {
         //data and error vars
+
         const {data, error} = await supabase
           .from('Plants')
-          .insert([{owners_username, name, species, is_native, is_indoors,icon_file_path,water_frequency,water_record,water_schedule}]) // inserts new row, vars must be same name as col names
+          .insert([{owners_username, name, species, is_native, is_indoors,icon_file_path,water_frequency,water_record,water_schedule,notes}]) // inserts new row, vars must be same name as col names
     
         if (error) {
           console.log(error)
@@ -111,6 +114,8 @@ export default function AddPlant({route}){
         console.log('submitted')
         navigation.navigate('Home',{username:owners_username})
     }
+    //console.log(searchQuery)
+    //console.log(searchResults)
 
     return (
       <ScrollView style={{width:w,height:900}}>
@@ -121,6 +126,7 @@ export default function AddPlant({route}){
           onSubmitEditing={searchPlants}
         />
         {searchResults.map((plant) => (
+        
           <TouchableOpacity key={plant.id} onPress={() => selectPlant(plant)}>
             <Text>{plant.common_name || plant.scientific_name}</Text>
             {plant.image_url && <Image source={{ uri: plant.image_url }} style={{ width: 50, height: 50 }} />}
@@ -175,6 +181,10 @@ export default function AddPlant({route}){
 
         <View style={styles.input}>
           <TextInput label='Last watered (yyyy-MM-dd)' onChangeText={(text) => {setWaterRecord([text])}}/>
+        </View>
+
+        <View style={styles.input}>
+          <TextInput label='Notes' onChangeText={(text) => {setNotes(text)}}/>
         </View>
         
         
