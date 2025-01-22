@@ -14,6 +14,7 @@ export default function PlantListBlock({plant}){
                     <Text>{plant.species}</Text>
                 </View>
             </Surface>
+            
         </TouchableOpacity>
     )
 }

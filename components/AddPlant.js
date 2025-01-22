@@ -1,14 +1,32 @@
-import {Button, Dimensions,ScrollView,TouchableOpacity,StyleSheet,View,Text,Image, TouchableHighlight} from 'react-native';
-import {TextInput,Chip,SegmentedButtons,Surface} from 'react-native-paper';
+import {Button, TextInput,Dimensions,ScrollView,TouchableOpacity,StyleSheet,View,Text, TouchableHighlight, KeyboardAvoidingView} from 'react-native';
+import {Chip,SegmentedButtons,Surface} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import { formatDistance, subDays,add,parse,format } from "date-fns";
 import supabase from '../supabaseClient';
+import { Image } from 'expo-image';
 
 export default function AddPlant({route}){
     const navigation = useNavigation();
     const h = Dimensions.get('screen').height;
     const w = Dimensions.get('screen').width;
+
+    const iconFilePathArr = [[
+      require('../assets/14.png'),
+      require('../assets/15.png'),
+      require('../assets/16.png')
+    ],
+    [
+      require('../assets/17.png'),
+      require('../assets/18.png'),
+      require('../assets/19.png')
+    ],
+    [
+      require('../assets/20.png'),
+      require('../assets/21.png'),
+      require('../assets/22.png')
+    ]
+    ]
 
     const {owners_username} = route.params 
     const [name, setName] = useState('')
@@ -118,13 +136,17 @@ export default function AddPlant({route}){
     //console.log(searchResults)
 
     return (
-      <ScrollView style={{width:w,height:900}}>
-        <TextInput
-          label="Search Plants"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          onSubmitEditing={searchPlants}
-        />
+      <KeyboardAvoidingView style={{height:h,width:w,backgroundColor:'#f8f4ed',alignItems:'center'}} behavior='height'>
+        <ScrollView contentContainerStyle={{width:w,height:1200,alignItems:'center'}}>
+        <View >
+          <TextInput 
+            label="Search Plants"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            onSubmitEditing={searchPlants}
+          />
+        </View>
+        
         {searchResults.map((plant) => (
         
           <TouchableOpacity key={plant.id} onPress={() => selectPlant(plant)}>
@@ -132,17 +154,35 @@ export default function AddPlant({route}){
             {plant.image_url && <Image source={{ uri: plant.image_url }} style={{ width: 50, height: 50 }} />}
           </TouchableOpacity>
         ))}
+
+        <View style={styles.textInputBox}>
+            <TextInput style={styles.textInput} placeholder='Name' onChangeText={(text) => setName(text)}/>
+        </View>
         
-        <View style={styles.input}>
-            <TextInput label='Name' onChangeText={(text) => {setName(text)}}/>
+        <View style={styles.textInputBox}>
+            <TextInput style={styles.textInput} placeholder='Species' onChangeText={(text) => {setSpecies(text)}}/>
         </View>
 
-        <View style={styles.input}>
-            <TextInput label='Species' onChangeText={(text) => {setSpecies(text)}}/>
+        
+
+        <View style={styles.textInputBox}>
+            <TextInput style={styles.textInput} placeholder='Last watered (yyyy-MM-dd)' onChangeText={(text) => {setWaterRecord([text])}}/>
+        </View>
+
+        <View style={styles.freqWaterByDayQue}>
+          <Text>Water every </Text>
+          <View style={styles.shortInput}>
+            <TextInput onChangeText={(text) => {setWaterFrequency(parseInt(text,10))}}/>
+          </View>
+          <Text> days </Text>
+        </View>
+
+        <View style={styles.textInputBox}>
+            <TextInput style={styles.textInput} placeholder='Notes' onChangeText={(text) => {setNotes(text)}}/>
         </View>
         
         <SegmentedButtons
-          style={{margin:30}}
+          style={{margin:20}}
           value={is_indoors}
           onValueChange={setIsIndoors}
           buttons={[
@@ -157,36 +197,42 @@ export default function AddPlant({route}){
           ]}
         />
 
-        <Chip style={{margin:30}} onPress={()=>{setIsNative(!is_native)}} mode='outlined' selected={is_native}>Native Plant?</Chip>
-
+        <Chip style={{margin:30}} onPress={()=>{setIsNative(!is_native)}} mode='outlined' selected={is_native} selectedColor='#544e3d'>Native Plant?</Chip>
+        <Text>Pick an icon</Text>
         <View style={styles.row}>
-          <TouchableOpacity onPress={()=>setIconFilePath("https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg")}>
-            <Surface style={styles.surface}>
-              <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/7/70/Malva_moschata_Mitterbach_02.jpg"}}/>
-            </Surface>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={()=>setIconFilePath("https://upload.wikimedia.org/wikipedia/commons/f/f1/Green_plants_1.jpg")}>
-            <Surface style={styles.surface}>
-              <Image source={{width:75,height:75,uri:"https://upload.wikimedia.org/wikipedia/commons/f/f1/Green_plants_1.jpg"}}/>
-            </Surface>
-          </TouchableOpacity>
+          {Array.from({ length: iconFilePathArr[0].length }).map((_, i) => (
+            <TouchableOpacity onPress={()=>setIconFilePath(iconFilePathArr[0][i])}>
+              <Surface style={styles.surface}>
+                <View style={styles.imageContainer}>
+                  <Image style={styles.image} source={iconFilePathArr[0][i]}/>
+                </View>
+              </Surface>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <View style={styles.row}>
+          {Array.from({ length: iconFilePathArr[1].length }).map((_, i) => (
+            <TouchableOpacity onPress={()=>setIconFilePath(iconFilePathArr[1][i])}>
+              <Surface style={styles.surface}>
+                <View style={styles.imageContainer}>
+                  <Image style={styles.image} source={iconFilePathArr[1][i]}/>
+                </View>
+              </Surface>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <View style={styles.row}>
+          {Array.from({ length: iconFilePathArr[2].length }).map((_, i) => (
+            <TouchableOpacity onPress={()=>setIconFilePath(iconFilePathArr[2][i])}>
+              <Surface style={styles.surface}>
+                <View style={styles.imageContainer}>
+                  <Image style={styles.image} source={iconFilePathArr[2][i]}/>
+                </View>
+              </Surface>
+            </TouchableOpacity>
+          ))}
         </View>
 
-        <View style={styles.freqWaterByDayQue}>
-          <Text>Water every </Text>
-          <TextInput style={styles.shortInput} onChangeText={(text) => {setWaterFrequency(parseInt(text,10))}}/>
-          <Text> days </Text>
-        </View>
-
-        <View style={styles.input}>
-          <TextInput label='Last watered (yyyy-MM-dd)' onChangeText={(text) => {setWaterRecord([text])}}/>
-        </View>
-
-        <View style={styles.input}>
-          <TextInput label='Notes' onChangeText={(text) => {setNotes(text)}}/>
-        </View>
-        
         
 
         <View style={styles.submitBtn}>
@@ -199,6 +245,7 @@ export default function AddPlant({route}){
         </View>
         
       </ScrollView>
+      </KeyboardAvoidingView>
   
     )
 }
@@ -215,13 +262,17 @@ const styles = StyleSheet.create({
     height:40,
     width:40,
     margin:0,
+    backgroundColor:'#e0dbcc',
+    justifyContent:'center',
+    borderRadius: 10,
+    padding:10
     
   },
   submitBtn:{
-    backgroundColor:'green',
+    backgroundColor:'#457a37',
     height:40,
     width:100,
-    borderRadius: 10,
+    borderRadius: 20,
     margin:30,
   },
   surface:{
@@ -236,14 +287,18 @@ const styles = StyleSheet.create({
     width:'100%',
     height:100,
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    margin:5
   },
   freqWaterByDayQue:{
     width:'100%',
     height:40,
     flexDirection:'row',
     justifyContent: 'flex-start',
-    margin:30
+    alignItems:'center',
+    margin:30,
+    left:20
+
   },
   dayChipRow:{
     flexDirection:'row',
@@ -252,5 +307,46 @@ const styles = StyleSheet.create({
     width:100,
     height:30
   },
+  textInputBox:{
+    height:50,
+    width:'90%',
+    backgroundColor:'#e0dbcc',
+    justifyContent:'center',
+    borderRadius: 25,
+    margin:10
+  },
+  textInput:{
+      height:40,
+      width:'80%',
+      backgroundColor:'#e0dbcc',
+      left:15
+  },
+  longTextInput:{
+    height:80,
+    width:'90%',
+    margin:10,
+    backgroundColor:'green',
+    flexDirection:'column',
+    justifyContent:'flex-start',
+    
+  },
+  longTextInputBox:{
+    height:100,
+    width:'90%',
+    justifyContent:'flex-start',
+    alignItems:'center',
+    borderRadius: 25,
+    margin:10,
+    backgroundColor:'#e0dbcc',
+  },
+  imageContainer:{
+    height:75,
+    width:75,
+    alignSelf:'center',
+    margin:40
+  },
+  image:{
+    width: 75,height: 75,contentFit: 'contain'
+  }
 
 })
