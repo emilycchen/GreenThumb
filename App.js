@@ -11,7 +11,7 @@ import PlantList from './components/PlantList.js';
 import Home from './components/Home.js';
 import Login from './components/Login.js';
 import Signup from './components/Signup.js';
-//import FetchPlant from './components/FetchPlant.js';
+import FindNewPlant from './components/FindNewPlant.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +23,7 @@ function RootStack() {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Add Plant" component={AddPlant}/>
       <Stack.Screen name="Articles" component={Articles}/>
+      <Stack.Screen name="Find New Plant" component={FindNewPlant} />
       <Stack.Screen name="Plant Info" component={PlantInfo}/>
       <Stack.Screen name="Plant Calendar" component={PlantCalendar}/>
       <Stack.Screen name="Plant List" component={PlantList}/>
