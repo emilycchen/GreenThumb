@@ -5,28 +5,50 @@ import {useState} from 'react';
 import { formatDistance, subDays,add,parse,format } from "date-fns";
 import supabase from '../supabaseClient';
 import { Image } from 'expo-image';
+import icon1 from '../assets/14.png'
 
 export default function AddPlant({route}){
     const navigation = useNavigation();
     const h = Dimensions.get('screen').height;
     const w = Dimensions.get('screen').width;
 
+    // const iconFilePathArr = [[
+    //   require('../assets/14.png'),
+    //   require('../assets/15.png'),
+    //   require('../assets/16.png')
+    // ],
+    // [
+    //   require('../assets/17.png'),
+    //   require('../assets/18.png'),
+    //   require('../assets/19.png')
+    // ],
+    // [
+    //   require('../assets/20.png'),
+    //   require('../assets/21.png'),
+    //   require('../assets/22.png')
+    // ]
+    // ]
+
     const iconFilePathArr = [[
-      require('../assets/14.png'),
-      require('../assets/15.png'),
-      require('../assets/16.png')
+      '/Users/lhui/Workspace/GreenThumb/assets/14.png',
+      '/Users/lhui/Workspace/GreenThumb/assets/15.png',
+      '/Users/lhui/Workspace/GreenThumb/assets/16.png'
     ],
     [
-      require('../assets/17.png'),
-      require('../assets/18.png'),
-      require('../assets/19.png')
+      '/Users/lhui/Workspace/GreenThumb/assets/17.png',
+      '/Users/lhui/Workspace/GreenThumb/assets/18.png',
+      '/Users/lhui/Workspace/GreenThumb/assets/19.png'
     ],
     [
-      require('../assets/20.png'),
-      require('../assets/21.png'),
-      require('../assets/22.png')
+      '/Users/lhui/Workspace/GreenThumb/assets/20.png',
+      '/Users/lhui/Workspace/GreenThumb/assets/21.png',
+      '/Users/lhui/Workspace/GreenThumb/assets/22.png'
     ]
     ]
+
+    const test = ['../assets/14.png',
+      '../assets/15.png',
+      '../assets/16.png']
 
     const {owners_username} = route.params 
     const [name, setName] = useState('')
@@ -200,7 +222,7 @@ export default function AddPlant({route}){
         <Chip style={{margin:30}} onPress={()=>{setIsNative(!is_native)}} mode='outlined' selected={is_native} selectedColor='#544e3d'>Native Plant?</Chip>
         <Text>Pick an icon</Text>
         <View style={styles.row}>
-          {Array.from({ length: iconFilePathArr[0].length }).map((_, i) => (
+        {Array.from({ length: iconFilePathArr[0].length }).map((_, i) => (
             <TouchableOpacity onPress={()=>setIconFilePath(iconFilePathArr[0][i])}>
               <Surface style={styles.surface}>
                 <View style={styles.imageContainer}>

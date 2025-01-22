@@ -20,13 +20,15 @@
   
 //     )
 // }
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import PlantListBlock from './subcomponents/PlantListBlock';
+import { Image } from 'expo-image';
 
 const PlantList = ({ route }) => {
   const { plants } = route.params;
   const navigation = useNavigation();
+
 
   return (
     <View style={styles.background}>
@@ -41,9 +43,8 @@ const PlantList = ({ route }) => {
           >
             <View style={styles.plantBlock}>
               <Image
-                source={{ uri: plants[i]?.icon_file_path }}
+                source={plants[i]?.icon_file_path}
                 style={styles.plantImage}
-                resizeMode="cover"
               />
               <View style={styles.plantText}>
                 <Text style={styles.name}>{plants[i]?.name || "Unnamed Plant"}</Text>

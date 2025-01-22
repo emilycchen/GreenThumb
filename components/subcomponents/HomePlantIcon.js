@@ -1,7 +1,8 @@
 
-import { Image, StyleSheet, Dimensions, SafeAreaView, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, Dimensions, SafeAreaView, View, TouchableOpacity} from 'react-native';
 import { IconButton,Surface,Button } from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import { Image } from 'expo-image';
 
 export default function HomePlantIcon({display_id,plants}){
     const navigation = useNavigation();
@@ -14,8 +15,11 @@ export default function HomePlantIcon({display_id,plants}){
     
     return(
         <TouchableOpacity onPress={handlePress}>
+
             <Surface style={styles.surface}>
-                <Image source={{width:75, height:75, uri: plant!==null ? plant.icon_file_path : "https://upload.wikimedia.org/wikipedia/commons/1/18/Color-white.JPG"}}/>
+                <View style={styles.imageContainer}>
+                    <Image style={styles.image} source={plant!==null ? plant.icon_file_path : ''}/>
+                </View>
             </Surface>
         </TouchableOpacity>
     );
@@ -32,4 +36,12 @@ const styles = StyleSheet.create({
         margin:10
     
       },
+      imageContainer:{
+        height:75,
+        width:75,
+        alignSelf:'center',
+      },
+      image:{
+        width: 75,height: 75,contentFit: 'contain'
+      }
 });
