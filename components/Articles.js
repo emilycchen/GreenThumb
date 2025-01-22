@@ -77,22 +77,23 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: '#f8f4ed',
-    padding: 15,
+    padding: 10,
     paddingTop: 40
   },
   pageTitle: {
     fontSize: 25,
     fontWeight: 'bold',
     color: '#5e775f',
+    paddingBottom: 10,
   },
   infoBox: {
-    padding: 10,
+    padding: 5,
   },
   articleBlock: {
     backgroundColor: '#ffffff',
     padding: 13,
     borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   title: {
     fontSize: 17,
@@ -108,6 +109,5 @@ const styles = StyleSheet.create({
   sentence: {
     fontSize: 10,
     color: '#5e775f',
-    paddingBottom: 7
   },
 });

@@ -20,14 +20,12 @@ export default function PlantListBlock({plant}){
 
 const styles = StyleSheet.create({
     surface:{
-        width:300,
-        height:100,
-        borderRadius:20,
-        flexDirection:'row',
-        justifyContent:'flex-start',
-        alignItems:'center',
-        padding:10,
-        margin:10
+        flexDirection: 'row',
+        backgroundColor: '#ffffff',
+        padding: 10,
+        borderRadius: 10,
+        marginBottom: 10,
+        alignItems: 'center',
     },
     description:{
         width: 190,
