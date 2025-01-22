@@ -1,10 +1,35 @@
+// export default function PlantList({route}){
+//     const navigation = useNavigation();
+//     const {plants} = route.params;
+//     const h = Dimensions.get('screen').height;
+//     if (plants.length > 5){
+//       h += (plants.length-5)*110
+//     }
+
+//     return (
+//       <View>
+//         <ScrollView contentContainerStyle={{height: h,width:'100%', alignItems:'center'}}>
+//             {
+              
+//                 Array.from({ length: plants.length }).map((_, i) => 
+//                     <PlantListBlock key={i} value={i + 1} plant={plants[i]}/>
+//                   )
+//             }
+//         </ScrollView>
+//       </View>
+  
+//     )
+// }
+import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { ScrollView, Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import PlantListBlock from './subcomponents/PlantListBlock';
+import { Image } from 'expo-image';
 
 const PlantList = ({ route }) => {
   const { plants } = route.params;
   const navigation = useNavigation();
+
 
   return (
     <View style={styles.background}>
@@ -19,9 +44,8 @@ const PlantList = ({ route }) => {
           >
             <View style={styles.plantBlock}>
               <Image
-                source={{ uri: plants[i]?.icon_file_path }}
+                source={plants[i]?.icon_file_path}
                 style={styles.plantImage}
-                resizeMode="cover"
               />
               <View style={styles.plantText}>
                 <Text style={styles.name}>{plants[i]?.name || "Unnamed Plant"}</Text>
