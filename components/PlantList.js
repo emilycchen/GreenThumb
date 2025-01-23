@@ -29,7 +29,6 @@ const PlantList = ({ route }) => {
   const { plants } = route.params;
   const navigation = useNavigation();
 
-
   return (
     <View style={styles.background}>
       <ScrollView>
