@@ -13,7 +13,7 @@ export default function PlantInfo({route}){
   const w = Dimensions.get('screen').width;
   const {plant_id} = route.params;
   const garden = "https://upload.wikimedia.org/wikipedia/commons/e/e0/Back_garden_-_Flickr_-_peganum_%281%29.jpg";
-  const indoors = "https://live.staticflickr.com/4089/4843832442_97e559de33.jpg";
+  const indoors = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Int%C3%A9rieur_Villa_Aalto.jpg/640px-Int%C3%A9rieur_Villa_Aalto.jpg";
   
 
   const [name, setName] = useState('')
