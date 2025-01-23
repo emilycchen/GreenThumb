@@ -20,11 +20,10 @@
   
 //     )
 // }
-import { ScrollView, Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { ScrollView, Text, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import PlantListBlock from './subcomponents/PlantListBlock';
-import { Image } from 'expo-image';
+//import { Image } from 'expo-image';
 
 const PlantList = ({ route }) => {
   const { plants } = route.params;

@@ -25,7 +25,7 @@ export default function PlantInfo({route}){
   const [water_record, setWaterRecord] = useState([])
   const [water_schedule, setWaterSchedule] = useState([])
   const [created_at, setCreatedAt] = useState(null)
-  const [notes, setNotes] = useState('')
+  const [notes, setNotes] = useState('None')
 
 
     useEffect(() => {
@@ -49,7 +49,10 @@ export default function PlantInfo({route}){
               setWaterRecord(data.water_record)
               setWaterSchedule(data.water_schedule)
               setCreatedAt(data.created_at)
-              setNotes(data.notes)
+              if (data.notes !== 0){
+                setNotes(data.notes)
+              }
+              
             }
             
         }
