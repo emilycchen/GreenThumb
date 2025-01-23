@@ -153,27 +153,29 @@ export default function Home({route}) {
 
       
 
-      <Button mode="outlined" textColor='green' onPress = {() => navigation.navigate('Plant List',{plants:plants})}>All Plants</Button>
+      <Button mode="outlined" textColor='#457a37' onPress = {() => navigation.navigate('Plant List',{plants:plants})}>All Plants</Button>
       
       <View style={styles.bannerBottom}>
-        <TouchableOpacity onPress = {() => navigation.navigate('Add Plant',{owners_username: username})}>
-          <IconButton mode='contained' icon='plus' containerColor='green' iconColor='lightgreen'size={35}/>
-        </TouchableOpacity>
+        
 
         <TouchableOpacity onPress = {() => navigation.navigate('Articles')}>
-          <IconButton mode='contained' icon='newspaper-variant-multiple' containerColor='green' iconColor='lightgreen'size={35}/>
+          <IconButton mode='contained' icon='newspaper-variant-multiple' containerColor='#457a37' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 
         <TouchableOpacity onPress = {() => navigation.navigate('Plant Calendar',{plants:plants})}>
-          <IconButton mode='contained' icon='calendar' containerColor='green' iconColor='lightgreen'size={35}/>
+          <IconButton mode='contained' icon='calendar' containerColor='#457a37' iconColor='lightgreen'size={35}/>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress = {() => navigation.navigate('Add Plant',{owners_username: username})}>
+          <IconButton mode='contained' icon='plus' containerColor='#457a37' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 
         <TouchableOpacity onPress = {() => navigation.navigate('Find New Plant')}>
-          <IconButton mode='contained' icon='door-open' containerColor='green' iconColor='lightgreen'size={35}/>
+          <IconButton mode='contained' icon='magnify' containerColor='#457a37' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 
         <TouchableOpacity onPress = {() => navigation.navigate('Login')}>
-          <IconButton mode='contained' icon='door-open' containerColor='green' iconColor='lightgreen'size={35}/>
+          <IconButton mode='contained' icon='door-open' containerColor='#457a37' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 
 
@@ -185,7 +187,7 @@ export default function Home({route}) {
 const styles = StyleSheet.create({
     container: {
       flex:1,
-      backgroundColor: '#e6e8e6',
+      backgroundColor:'#f8f4ed',
       alignItems: 'center',
       justifyContent: 'flex-end'
     },
