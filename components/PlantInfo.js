@@ -101,7 +101,7 @@ export default function PlantInfo({route}){
 
         <View style={{flexDirection:'row',alignSelf:'flex-start',alignItems:'center'}}>
           <View style={styles.imageBox}>
-            <Image source={{width:125,height:125,uri:icon_file_path}}/>
+            <Image source={{height:125,width:125,uri:icon_file_path}}/>
           </View>
           <View style={{width:160, height:'80%'}}>
             <Text style={styles.subtitle}>Indoors?</Text>

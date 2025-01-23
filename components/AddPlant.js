@@ -1,11 +1,10 @@
-import {Button, TextInput,Dimensions,ScrollView,TouchableOpacity,StyleSheet,View,Text, TouchableHighlight, KeyboardAvoidingView} from 'react-native';
+import {Button, Image, TextInput,Dimensions,ScrollView,TouchableOpacity,StyleSheet,View,Text, TouchableHighlight, KeyboardAvoidingView} from 'react-native';
 import {Chip,SegmentedButtons,Surface} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useState} from 'react';
 import { formatDistance, subDays,add,parse,format } from "date-fns";
 import supabase from '../supabaseClient';
-import { Image } from 'expo-image';
-import icon1 from '../assets/14.png'
+//import { Image } from 'expo-image';
 
 export default function AddPlant({route}){
     const navigation = useNavigation();
@@ -30,19 +29,19 @@ export default function AddPlant({route}){
     // ]
 
     const iconFilePathArr = [[
-      '/Users/lhui/Workspace/GreenThumb/assets/14.png',
-      '/Users/lhui/Workspace/GreenThumb/assets/15.png',
-      '/Users/lhui/Workspace/GreenThumb/assets/16.png'
+      'https://i.imgur.com/PJbA2e9.png',
+      'https://i.imgur.com/8Jeyrl5.png',
+      'https://i.imgur.com/PbRbErk.png'
     ],
     [
-      '/Users/lhui/Workspace/GreenThumb/assets/17.png',
-      '/Users/lhui/Workspace/GreenThumb/assets/18.png',
-      '/Users/lhui/Workspace/GreenThumb/assets/19.png'
+      'https://i.imgur.com/AAFvNuf.png',
+      'https://i.imgur.com/PTQ00ME.png',
+      'https://i.imgur.com/Tt3XT9G.png'
     ],
     [
-      '/Users/lhui/Workspace/GreenThumb/assets/20.png',
-      '/Users/lhui/Workspace/GreenThumb/assets/21.png',
-      '/Users/lhui/Workspace/GreenThumb/assets/22.png'
+      'https://i.imgur.com/ABLvUJP.png',
+      'https://i.imgur.com/b20BXnM.png',
+      'https://i.imgur.com/rVaiuLU.png'
     ]
     ]
 
@@ -225,9 +224,8 @@ export default function AddPlant({route}){
         {Array.from({ length: iconFilePathArr[0].length }).map((_, i) => (
             <TouchableOpacity onPress={()=>setIconFilePath(iconFilePathArr[0][i])}>
               <Surface style={styles.surface}>
-                <View style={styles.imageContainer}>
-                  <Image style={styles.image} source={iconFilePathArr[0][i]}/>
-                </View>
+                <Image source={{height:75,width:75,uri:iconFilePathArr[0][i]}}/>
+
               </Surface>
             </TouchableOpacity>
           ))}
@@ -236,9 +234,7 @@ export default function AddPlant({route}){
           {Array.from({ length: iconFilePathArr[1].length }).map((_, i) => (
             <TouchableOpacity onPress={()=>setIconFilePath(iconFilePathArr[1][i])}>
               <Surface style={styles.surface}>
-                <View style={styles.imageContainer}>
-                  <Image style={styles.image} source={iconFilePathArr[1][i]}/>
-                </View>
+                <Image source={{height:75,width:75,uri:iconFilePathArr[1][i]}}/>
               </Surface>
             </TouchableOpacity>
           ))}
@@ -247,9 +243,7 @@ export default function AddPlant({route}){
           {Array.from({ length: iconFilePathArr[2].length }).map((_, i) => (
             <TouchableOpacity onPress={()=>setIconFilePath(iconFilePathArr[2][i])}>
               <Surface style={styles.surface}>
-                <View style={styles.imageContainer}>
-                  <Image style={styles.image} source={iconFilePathArr[2][i]}/>
-                </View>
+                <Image source={{height:75,width:75,uri:iconFilePathArr[2][i]}}/>
               </Surface>
             </TouchableOpacity>
           ))}
