@@ -135,7 +135,6 @@ export default function Home({route}) {
   
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.gridRow}>
         <HomePlantIcon display_id={0} plants={plants}/>
         <HomePlantIcon display_id={1} plants={plants}/>

@@ -1,4 +1,4 @@
-import {Button, StyleSheet,View,Text,ScrollView} from 'react-native';
+import {Button, StyleSheet,View,Text,ScrollView,Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import { use, useState } from 'react';
@@ -140,7 +140,7 @@ export default function PlantCalendar({route}){
 
 
     return (
-      <View>
+      <ScrollView contentContainerStyle={{height:900,backgroundColor: '#f8f4ed'}}>
         <Calendar 
           style={styles.calendar}
           onDayPress={day => {
@@ -154,7 +154,10 @@ export default function PlantCalendar({route}){
             <View style={{margin:10}}>
               {
                 Array.from({ length: selectedDay in plantsPerDate ? plantsPerDate[selectedDay].length : 0 }).map((_, i) => 
-                  <Chip key={i} 
+                  <Chip 
+                  selectedColor='#5e775f'
+                  mode='outlined'
+                  key={i} 
                   value={i + 1}
                   style={{margin: 5}}
                   onPress={() => {
@@ -196,8 +199,7 @@ export default function PlantCalendar({route}){
             }
           }}/>
         </View>
-        
-      </View>
+      </ScrollView>
   
     )
 }
@@ -212,13 +214,16 @@ const styles = StyleSheet.create({
   listBox:{
     backgroundColor:'white',
     width: '90%',
-    height:190,
     margin:10,
     borderRadius:50,
     padding: 20
   },
   date:{
-    fontSize:20,
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#5e775f',
+    paddingBottom: 10,
+    
     alignSelf:'center'
   }
 })

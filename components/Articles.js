@@ -45,12 +45,13 @@
 
 import React from 'react';
 import articlesData from './articles.json';
-import {Linking, ScrollView, View, Text, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
+import {Linking, Dimensions, ScrollView, View, Text, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
 
 const ArticlesList = () => {
+  
   return (
     <View style={styles.background}>
-      <ScrollView>
+      <ScrollView >
         <View style={styles.infoBox}>
           <Text style={styles.pageTitle}>{"Articles"}</Text>
         </View> 
