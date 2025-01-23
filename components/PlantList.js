@@ -41,10 +41,7 @@ const PlantList = ({ route }) => {
             onPress={() => navigation.navigate('Plant Info', { plant_id: plants[i].plant_id })}
           >
             <View style={styles.plantBlock}>
-              <Image
-                source={plants[i]?.icon_file_path}
-                style={styles.plantImage}
-              />
+              <Image source={{height:75,width:75,uri:plants[i].icon_file_path}}/>
               <View style={styles.plantText}>
                 <Text style={styles.name}>{plants[i]?.name || "Unnamed Plant"}</Text>
                 <Text style={styles.species}>{plants[i]?.species || "No Species"}</Text>
