@@ -168,6 +168,10 @@ export default function Home({route}) {
           <IconButton mode='contained' icon='calendar' containerColor='green' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
 
+        <TouchableOpacity onPress = {() => navigation.navigate('Find New Plant')}>
+          <IconButton mode='contained' icon='door-open' containerColor='green' iconColor='lightgreen'size={35}/>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress = {() => navigation.navigate('Login')}>
           <IconButton mode='contained' icon='door-open' containerColor='green' iconColor='lightgreen'size={35}/>
         </TouchableOpacity>
