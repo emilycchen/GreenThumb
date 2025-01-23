@@ -13,7 +13,7 @@ export default function PlantInfo({route}){
   const w = Dimensions.get('screen').width;
   const {plant_id} = route.params;
   const garden = "https://upload.wikimedia.org/wikipedia/commons/e/e0/Back_garden_-_Flickr_-_peganum_%281%29.jpg";
-  const indoors = "https://upload.wikimedia.org/wikipedia/commons/d/d5/Potted_plants_featuring_tropicals.jpg";
+  const indoors = "https://live.staticflickr.com/4089/4843832442_97e559de33.jpg";
   
 
   const [name, setName] = useState('')
@@ -77,20 +77,21 @@ export default function PlantInfo({route}){
 
     return (
 
-      <ScrollView contentContainerStyle={{ width: w,height: 900,alignItems:'center'}}>
+      <ScrollView contentContainerStyle={{ width: w,height: 830,alignItems:'center',backgroundColor:'#f8f4ed'}}>
         <Image source={{width:'100%',height:200,uri:is_indoors? indoors:garden}}/> 
         <View style={styles.titleBox}>
-          <Text style={{fontSize:30, margin:10}}>{name}</Text>
-          <Text>{species}</Text>
+          <Text style={styles.title}>{name}</Text>
+          <Text style={styles.species}>{species}</Text>
         </View>
 
         <View style={styles.box}>
-          <Image source={{width:70,height:70,uri:"https://upload.wikimedia.org/wikipedia/commons/f/f8/2006-02-13_Drop-impact.jpg"}}/>
+          <View style={{height:70,width:70}}>
+            <Image style={{height:70,width:70,resizeMode:'contain'}} source={require('../assets/13plantProfileIcon.png')}/>
+          </View>
           <View style={styles.textBox}>
-            <Text>Watering</Text>
-            <Text>Last watered:</Text>
+            <Text style={styles.subtitle}>Last watered:</Text>
             <Text>{water_record? water_record[water_record.length-1] : 'No waterings'}</Text>
-            <Text>Next watering:</Text>
+            <Text style={styles.subtitle}>Next watering:</Text>
             <Text>{nextWatering}</Text>
           </View>
         </View>
@@ -99,22 +100,20 @@ export default function PlantInfo({route}){
           <View style={styles.imageBox}>
             <Image source={{width:125,height:125,uri:icon_file_path}}/>
           </View>
-          <View>
-            <Text>Indoors?</Text>
+          <View style={{width:160, height:'80%'}}>
+            <Text style={styles.subtitle}>Indoors?</Text>
             <Text>{is_indoors.toString()}</Text>
-            <Text>Native Species?</Text>
+            <Text style={styles.subtitle}>Native Species?</Text>
             <Text>{is_native.toString()}</Text>
-            <Text>Status:</Text>
-            <Text>Nothing here yet</Text>
-            <Text>Date Registered:</Text>
+            <Text style={styles.subtitle}>Date Registered:</Text>
             <Text>{created_at}</Text>
           </View>
         </View>
 
         <View>
-          <Text>Notes</Text>
+          <Text style={styles.subtitle}>Notes</Text>
           <View style={styles.box}>
-            <View style={{width:'90%',height:100}}>
+            <View style={{width:'90%',height:50}}>
               <Text>{notes}</Text>
             </View>
           </View>
@@ -127,12 +126,10 @@ export default function PlantInfo({route}){
 }
 
 const styles = StyleSheet.create({
-  container:{
-   
-  },
   box:{
     flexDirection:'row',
     justifyContent:'flex-start',
+    alignItems:'center',
     borderRadius:20,
     backgroundColor:'white',
     width:'90%',
@@ -149,10 +146,29 @@ const styles = StyleSheet.create({
   },
   textBox:{
     width:'80%',
-    margin:15
+    margin:15,
+    right:-30
   },
   titleBox:{
-    alignItems: 'center'
+    alignItems: 'center',
+    
+  },
+  title:{
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: '#5e775f',
+    paddingTop:20
+  },
+  species: {
+    fontSize: 20,
+    fontWeight: 400,
+    color: '#acd963',
+  },
+  subtitle: {
+    fontSize: 14,
+    fontWeight: 800,
+    color: '#5e775f',
+    paddingTop: 5
   },
   
 })
